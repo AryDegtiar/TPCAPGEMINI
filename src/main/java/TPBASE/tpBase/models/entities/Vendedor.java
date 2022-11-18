@@ -1,8 +1,9 @@
-package TPBASE.tpBase.models;
+package TPBASE.tpBase.models.entities;
 
+import TPBASE.tpBase.models.enums.MetodoPago;
 import java.util.List;
 
-public class Vendedor {
+public class Vendedor extends EntidadPersistente{
     private String usuario;
     private List<MetodoPago> metodosPago;
 

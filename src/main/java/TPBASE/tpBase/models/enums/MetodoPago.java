@@ -1,0 +1,13 @@
+package TPBASE.tpBase.models.enums;
+
+public enum MetodoPago {
+    EFECTIVO,
+    TRANSFERENCIA_BANCARIA,
+    RAPIPAGO,
+    PAGOFACIL,
+    CREDITO_VISA,
+    CREDITO_MASTERCARD,
+    CREDITO_AMERICANEXPRESS,
+    DEBITO_VISA,
+    DEBITO_MASTERCARD
+}
