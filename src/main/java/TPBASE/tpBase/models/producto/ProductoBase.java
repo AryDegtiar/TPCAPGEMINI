@@ -1,7 +1,6 @@
 package TPBASE.tpBase.models.producto;
 
 import TPBASE.tpBase.models.controladores.EntidadPersistente;
-import TPBASE.tpBase.models.entities.Categoria;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +12,8 @@ import java.util.List;
 @Entity
 @Table(name = "productoBase")
 public class ProductoBase extends EntidadPersistente {
-    @Transient
+    @ManyToOne
+    @JoinColumn(name = "categoria_id", referencedColumnName = "id")
     private Categoria Categoria;
 
     @Column(name = "nombre")
