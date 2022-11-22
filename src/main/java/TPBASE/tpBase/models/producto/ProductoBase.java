@@ -14,7 +14,7 @@ import java.util.List;
 public class ProductoBase extends EntidadPersistente {
     @ManyToOne
     @JoinColumn(name = "categoria_id", referencedColumnName = "id")
-    private Categoria Categoria;
+    private Categoria categoria;
 
     @Column(name = "nombre")
     private String nombre;
@@ -35,20 +35,6 @@ public class ProductoBase extends EntidadPersistente {
     public ProductoBase() {
         this.areaPersonalizaciones = new ArrayList<>();
         this.atributos = new ArrayList<>();
-    }
-
-    public void personalizarArea(AreaPersonalizacion areaPersonalizaciones){
-        // verificar que el area este en las areasPersonalizacionPermitidas
-        // aregar a la lista de personalizaciones
-    }
-
-    public void eliminarPersonalizacion(AreaPersonalizacion areaPersonalizaciones){
-        // codigo
-    }
-
-    public Integer precioTotal(){
-        // precio base + precio de cada personalizacion
-        return 0;
     }
 
 }

@@ -7,10 +7,9 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
-@Getter
-@Setter
+@Getter @Setter
 @Entity
 public class Categoria extends EntidadPersistente {
-    @Column(name = "nombre")
-    private String nombre;
+    @Column(name = "categoria")
+    private String categoria;
 }

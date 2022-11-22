@@ -21,4 +21,6 @@ public class Personalizacion extends EntidadPersistente {
     private String contenido;
     @Column(name = "precio")
     private Integer precio;
+
+
 }
