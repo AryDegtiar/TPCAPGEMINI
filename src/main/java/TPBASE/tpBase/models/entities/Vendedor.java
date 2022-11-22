@@ -1,9 +1,15 @@
 package TPBASE.tpBase.models.entities;
 
+import TPBASE.tpBase.models.controladores.EntidadPersistente;
 import TPBASE.tpBase.models.enums.MetodoPago;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
-public class Vendedor extends EntidadPersistente{
+@Getter
+@Setter
+public class Vendedor extends EntidadPersistente {
     private String usuario;
     private List<MetodoPago> metodosPago;
 

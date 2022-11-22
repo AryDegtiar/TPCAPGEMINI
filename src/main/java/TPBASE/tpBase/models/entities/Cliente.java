@@ -6,6 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Categoria extends EntidadPersistente {
-    private String name;
+public class Cliente extends EntidadPersistente {
+    private String mail;
+    private String contrasenia;
 }

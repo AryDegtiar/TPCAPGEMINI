@@ -1,15 +1,18 @@
-package TPBASE.tpBase.models.entities;
+package TPBASE.tpBase.models.producto;
 
+import TPBASE.tpBase.models.controladores.EntidadPersistente;
+import TPBASE.tpBase.models.entities.Categoria;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter @Setter
 @Entity
 @Table(name = "productoBase")
-public class ProductoBase extends EntidadPersistente{
+public class ProductoBase extends EntidadPersistente {
     @Transient
     private Categoria Categoria;
 
@@ -29,9 +32,9 @@ public class ProductoBase extends EntidadPersistente{
     @Transient
     private List<AtributoProducto> atributos;
 
-    public ProductoBase(List<AreaPersonalizacion> areaPersonalizaciones,List<AtributoProducto> atributos) {
-        this.areaPersonalizaciones = areaPersonalizaciones;
-        this.atributos = atributos;
+    public ProductoBase() {
+        this.areaPersonalizaciones = new ArrayList<>();
+        this.atributos = new ArrayList<>();
     }
 
     public void personalizarArea(AreaPersonalizacion areaPersonalizaciones){
