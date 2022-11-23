@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter @Setter
@@ -18,5 +19,14 @@ public class AreaPersonalizacion {
     @Column(name = "area")
     public String area;
     @OneToMany // revisar y fiajarse que cre una table intermedia
-    public List<tipoPersonalizacion> personalizacionesProductos;
+    public List<TipoPersonalizacion> tipoPersonalizaciones;
+
+    public AreaPersonalizacion(String area, List<TipoPersonalizacion> personalizacionesProductos) {
+        this.area = area;
+        this.tipoPersonalizaciones = personalizacionesProductos;
+    }
+
+    public AreaPersonalizacion() {
+        this.tipoPersonalizaciones = new ArrayList<>();
+    }
 }

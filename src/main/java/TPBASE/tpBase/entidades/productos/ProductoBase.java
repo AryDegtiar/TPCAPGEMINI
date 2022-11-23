@@ -43,4 +43,12 @@ public class ProductoBase {
         this.atributos = new ArrayList<>();
     }
 
+    public ProductoBase(Categoria categoria, String nombre, String descripcion, Integer precioBase, Integer tiempoFabricacion, List<AreaPersonalizacion> areaPersonalizaciones) {
+        this.categoria = categoria;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.precioBase = precioBase;
+        this.tiempoFabricacion = tiempoFabricacion;
+        this.areaPersonalizaciones = areaPersonalizaciones;
+    }
 }

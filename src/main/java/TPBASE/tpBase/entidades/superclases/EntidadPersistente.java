@@ -1,4 +1,4 @@
-package TPBASE.tpBase.entidades.controladores;
+package TPBASE.tpBase.entidades.superclases;
 
 import lombok.Getter;
 

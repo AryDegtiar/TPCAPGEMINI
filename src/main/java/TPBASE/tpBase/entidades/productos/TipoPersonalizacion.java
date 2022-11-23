@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Getter @Setter
 @Entity
 @Table(name = "tipo_personalizacion")
-public class tipoPersonalizacion {
+public class TipoPersonalizacion {
     @Getter
     @Id
     @GeneratedValue
@@ -16,7 +16,16 @@ public class tipoPersonalizacion {
 
     @Column(name = "tipo")
     private String tipo;
+
     // NO VA
     //private Integer precio;
     //private String contenido; //se le puede agregar el contenido que va a ser como un link de muestra o algo asi
+
+    public TipoPersonalizacion(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public TipoPersonalizacion(){
+
+    }
 }

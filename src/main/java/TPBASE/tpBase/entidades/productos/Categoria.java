@@ -1,6 +1,7 @@
 package TPBASE.tpBase.entidades.productos;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -15,10 +16,10 @@ public class Categoria {
     private Integer cat_id;
 
     @Column(name = "categoria")
-    private String categoria;
+    private String nombre;
 
     public Categoria(String categoria) {
-        this.categoria = categoria;
+        this.nombre = categoria;
     }
 
     public Categoria() {
