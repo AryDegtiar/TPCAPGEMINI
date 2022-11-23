@@ -1,6 +1,7 @@
 package TPBASE.tpBase.entidades.compras;
 
 import TPBASE.tpBase.entidades.enums.MetodoPago;
+import TPBASE.tpBase.entidades.modelos.Cliente;
 import TPBASE.tpBase.entidades.modelos.Vendedor;
 import TPBASE.tpBase.entidades.productos.Publicacion;
 import lombok.Getter;
@@ -31,6 +32,9 @@ public class CompraRealizada {
     private MetodoPago metodoPago;
 
     @Transient
-    private Vendedor vendedor;
+    private Tienda tienda;
+
+    @Transient
+    private Cliente cliente;
 
 }

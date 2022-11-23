@@ -21,9 +21,9 @@ public class AreaPersonalizacion {
     @OneToMany // revisar y fiajarse que cre una table intermedia
     public List<TipoPersonalizacion> tipoPersonalizaciones;
 
-    public AreaPersonalizacion(String area, List<TipoPersonalizacion> personalizacionesProductos) {
+    public AreaPersonalizacion(String area, List<TipoPersonalizacion> tipoPersonalizaciones) {
         this.area = area;
-        this.tipoPersonalizaciones = personalizacionesProductos;
+        this.tipoPersonalizaciones = tipoPersonalizaciones;
     }
 
     public AreaPersonalizacion() {

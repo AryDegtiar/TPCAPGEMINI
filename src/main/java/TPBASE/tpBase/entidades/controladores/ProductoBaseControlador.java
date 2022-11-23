@@ -31,7 +31,12 @@ public class ProductoBaseControlador {
         }else{
             return null;
         }
+    }
 
+    @DeleteMapping(path = {"/{productoBaseID}"})
+    String eliminarProductoBaseID(@PathVariable("productoBaseID") Integer productoBaseID){
+        productoBaseRepositorio.deleteById(productoBaseID);
+        return "Se elimino correctamente el producto base con ID: " + (productoBaseID).toString();
     }
 
     @PostMapping(path = {"", "/"})

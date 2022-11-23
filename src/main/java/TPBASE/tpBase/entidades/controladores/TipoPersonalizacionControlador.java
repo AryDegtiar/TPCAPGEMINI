@@ -24,14 +24,19 @@ public class TipoPersonalizacionControlador {
     }
 
     @GetMapping(path = {"/{tipoID}"} )
-    TipoPersonalizacion obtenerAreaPersonalizacion(@PathVariable("areaID") Integer tipoID){
+    TipoPersonalizacion obtenerAreaPersonalizacion(@PathVariable("tipoID") Integer tipoID){
         Optional<TipoPersonalizacion> tipo = tipoPersonalizacionRepositorio.findById(tipoID);
         if (tipo.isPresent()){
             return tipo.get();
         }else{
             return null;
         }
+    }
 
+    @DeleteMapping(path = {"/{tipoPersonalizacionID}"})
+    String eliminarTipoPersonalizacionID(@PathVariable("tipoPersonalizacionID") Integer tipoPersonalizacionID){
+        tipoPersonalizacionRepositorio.deleteById(tipoPersonalizacionID);
+        return "Se elimino correctamente el tipo personalizacion con ID: " + (tipoPersonalizacionID).toString();
     }
 
     @PostMapping(path = {"", "/"})

@@ -17,7 +17,7 @@ public class AreaPersonalizacionControlador {
 
 
     @GetMapping(path = {"","/"})
-    List<AreaPersonalizacion> categorias(){
+    List<AreaPersonalizacion> areasPersonalizaciones(){
         return areaPersonalizacionRepositorio.findAll();
     }
 
@@ -29,11 +29,16 @@ public class AreaPersonalizacionControlador {
         }else{
             return null;
         }
+    }
 
+    @DeleteMapping(path = {"/{areaID}"})
+    String eliminarAreaPersonalizacionID(@PathVariable("areaID") Integer areaID){
+        areaPersonalizacionRepositorio.deleteById(areaID);
+        return "Se elimino correctamente el area personaliazda con ID: " + (areaID).toString();
     }
 
     @PostMapping(path = {"", "/"})
-    AreaPersonalizacion agregarCategoria(@RequestBody AreaPersonalizacion areaPersonalizacion){
+    AreaPersonalizacion agregarAreaPersonalizacion(@RequestBody AreaPersonalizacion areaPersonalizacion){
         return areaPersonalizacionRepositorio.save(areaPersonalizacion);
     }
 
