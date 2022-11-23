@@ -1,4 +1,4 @@
-package TPBASE.tpBase.models.convertidores;
+package TPBASE.tpBase.entidades.convertidores;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

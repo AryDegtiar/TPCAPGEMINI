@@ -1,6 +1,5 @@
-package TPBASE.tpBase.models.producto;
+package TPBASE.tpBase.entidades.productos;
 
-import TPBASE.tpBase.models.controladores.EntidadPersistente;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,10 +9,15 @@ import java.util.List;
 
 @Getter @Setter
 @Entity
-@Table(name = "productoBase")
-public class ProductoBase extends EntidadPersistente {
+@Table(name = "producto_base")
+public class ProductoBase {
+    @Getter
+    @Id
+    @GeneratedValue
+    private Integer prodbase_id;
+
     @ManyToOne
-    @JoinColumn(name = "categoria_id", referencedColumnName = "id")
+    @JoinColumn(name = "categoria_id", referencedColumnName = "cat_id")
     private Categoria categoria;
 
     @Column(name = "nombre")
@@ -25,11 +29,13 @@ public class ProductoBase extends EntidadPersistente {
     @Column(name = "tiempoFabricacion")
     private Integer tiempoFabricacion;
 
-    @Transient
+
+
+    @OneToMany // revisar y fiajarse que cre una table intermedia
     private List<AreaPersonalizacion> areaPersonalizaciones;
 
     // puede no ir, si llego se hace sino nop C:
-    @Transient
+    @Transient // revisar y fiajarse que cre una table intermedia
     private List<AtributoProducto> atributos;
 
     public ProductoBase() {

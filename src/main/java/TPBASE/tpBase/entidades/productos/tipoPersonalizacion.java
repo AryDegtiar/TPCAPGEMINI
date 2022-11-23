@@ -1,15 +1,19 @@
-package TPBASE.tpBase.models.producto;
+package TPBASE.tpBase.entidades.productos;
 
-import TPBASE.tpBase.models.controladores.EntidadPersistente;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 @Getter @Setter
 @Entity
-public class tipoPersonalizacion extends EntidadPersistente {
+@Table(name = "tipo_personalizacion")
+public class tipoPersonalizacion {
+    @Getter
+    @Id
+    @GeneratedValue
+    private Integer tipoperso_id;
+
     @Column(name = "tipo")
     private String tipo;
     // NO VA

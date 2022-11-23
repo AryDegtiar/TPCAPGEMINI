@@ -1,6 +1,5 @@
-package TPBASE.tpBase.models.producto;
+package TPBASE.tpBase.entidades.productos;
 
-import TPBASE.tpBase.models.controladores.EntidadPersistente;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,11 +8,17 @@ import java.util.List;
 
 @Getter @Setter
 @Entity
-public class Publicacion extends EntidadPersistente {
+@Table(name = "publicacion")
+public class Publicacion {
+    @Getter
+    @Id
+    @GeneratedValue
+    private Integer publi_id;
+
     @ManyToOne
-    @JoinColumn(name = "productoBase_id", referencedColumnName = "id")
+    @JoinColumn(name = "productoBase", referencedColumnName = "prodbase_id")
     private ProductoBase productoBase;
-    @Transient
+    @OneToMany // revisar y fiajarse que cre una table intermedia
     private List<Personalizacion> personalizaciones; // podria ser un set de personalizaciones
     @Column(name = "precioTotal")
     private Integer precioTotal;

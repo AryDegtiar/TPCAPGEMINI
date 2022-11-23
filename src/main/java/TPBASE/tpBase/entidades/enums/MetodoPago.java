@@ -1,4 +1,4 @@
-package TPBASE.tpBase.models.enums;
+package TPBASE.tpBase.entidades.enums;
 
 public enum MetodoPago {
     EFECTIVO,

@@ -1,15 +1,19 @@
-package TPBASE.tpBase.models.producto;
+package TPBASE.tpBase.entidades.productos;
 
-import TPBASE.tpBase.models.controladores.EntidadPersistente;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 @Getter @Setter
 @Entity
-public class Personalizacion extends EntidadPersistente {
+@Table(name = "personalizacion")
+public class Personalizacion {
+    @Getter
+    @Id
+    @GeneratedValue
+    private Integer perso_id;
+
     @Column(name = "seleccionArea")
     private String seleccionArea;
     @Column(name = "seleccionTipo")
