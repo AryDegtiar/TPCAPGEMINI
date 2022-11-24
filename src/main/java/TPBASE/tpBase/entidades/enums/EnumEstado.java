@@ -1,6 +1,6 @@
 package TPBASE.tpBase.entidades.enums;
 
-public enum Estado {
+public enum EnumEstado {
     DISPONIBLE,
     PAUSADO,
     CANCELADO

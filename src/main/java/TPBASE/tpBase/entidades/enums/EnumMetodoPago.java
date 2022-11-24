@@ -1,6 +1,6 @@
 package TPBASE.tpBase.entidades.enums;
 
-public enum MetodoPago {
+public enum EnumMetodoPago {
     EFECTIVO,
     TRANSFERENCIA_BANCARIA,
     RAPIPAGO,

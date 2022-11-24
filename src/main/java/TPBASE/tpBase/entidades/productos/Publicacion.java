@@ -1,5 +1,6 @@
 package TPBASE.tpBase.entidades.productos;
 
+import TPBASE.tpBase.entidades.modelos.Vendedor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,6 +23,11 @@ public class Publicacion {
     private List<Personalizacion> personalizaciones; // podria ser un set de personalizaciones
     @Column(name = "precioTotal")
     private Integer precioTotal;
+
+
+    @ManyToOne
+    @JoinColumn(name = "publicacion_x_vendedor")
+    private Vendedor vendedor;
 
     public void agregarPersonalizacion(Personalizacion personalizacion){
         this.personalizaciones.add(personalizacion);

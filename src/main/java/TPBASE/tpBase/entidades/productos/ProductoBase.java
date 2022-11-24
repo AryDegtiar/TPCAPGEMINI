@@ -29,26 +29,28 @@ public class ProductoBase {
     @Column(name = "tiempoFabricacion")
     private Integer tiempoFabricacion;
 
-
-
-    @OneToMany // revisar y fiajarse que cre una table intermedia
-    private List<AreaPersonalizacion> areaPersonalizaciones;
+    /*
+    @OneToMany // creo que deberia ser un Set<PosiblePersonalizacion>
+    private List<PosiblePersonalizacion> posiblePersonalizaciones;
+     */
+    @ManyToMany
+    private List<PosiblePersonalizacion> posiblePersonalizaciones;
 
     // puede no ir, si llego se hace sino nop C:
     @Transient // revisar y fiajarse que cre una table intermedia
     private List<AtributoProducto> atributos;
 
     public ProductoBase() {
-        this.areaPersonalizaciones = new ArrayList<>();
+        this.posiblePersonalizaciones = new ArrayList<>();
         this.atributos = new ArrayList<>();
     }
 
-    public ProductoBase(Categoria categoria, String nombre, String descripcion, Integer precioBase, Integer tiempoFabricacion, List<AreaPersonalizacion> areaPersonalizaciones) {
+    public ProductoBase(Categoria categoria, String nombre, String descripcion, Integer precioBase, Integer tiempoFabricacion, List<PosiblePersonalizacion> posiblePersonalizaciones) {
         this.categoria = categoria;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precioBase = precioBase;
         this.tiempoFabricacion = tiempoFabricacion;
-        this.areaPersonalizaciones = areaPersonalizaciones;
+        this.posiblePersonalizaciones = posiblePersonalizaciones;
     }
 }

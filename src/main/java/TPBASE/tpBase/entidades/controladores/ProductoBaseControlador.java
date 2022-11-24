@@ -19,12 +19,12 @@ public class ProductoBaseControlador {
 
 
     @GetMapping(path = {"","/"})
-    List<ProductoBase> categorias(){
+    List<ProductoBase> productosBases(){
         return productoBaseRepositorio.findAll();
     }
 
     @GetMapping(path = {"/{prodBaseID}"} )
-    ProductoBase obtenerAreaPersonalizacion(@PathVariable("prodBaseID") Integer prodBaseID){
+    ProductoBase obtenerProductoBaseID(@PathVariable("prodBaseID") Integer prodBaseID){
         Optional<ProductoBase> prodBase = productoBaseRepositorio.findById(prodBaseID);
         if (prodBase.isPresent()){
             return prodBase.get();
@@ -40,7 +40,7 @@ public class ProductoBaseControlador {
     }
 
     @PostMapping(path = {"", "/"})
-    ProductoBase agregarCategoria(@RequestBody ProductoBase productoBase){
+    ProductoBase agregarProductoBaseID(@RequestBody ProductoBase productoBase){
         return productoBaseRepositorio.save(productoBase);
     }
 

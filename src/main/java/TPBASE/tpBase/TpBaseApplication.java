@@ -33,6 +33,7 @@ public class TpBaseApplication {
 				System.out.println(args[0]);
 			}
 
+			/*
 			Categoria categoria = new Categoria("Remera");
 
 			TipoPersonalizacion tipo1 = new TipoPersonalizacion("imagen");
@@ -49,6 +50,7 @@ public class TpBaseApplication {
 
 			ProductoBase productoBase = new ProductoBase(categoria,"Remera Capitan Amercia S", "Rermera 100% tela algodon re pro",200, 5, areas);
 
+
 			//areaRepositorio.save(area1);
 
 			//productoBaseRepositorio.save(new ProductoBase(categoria,"Remera Capitan Amercia S", "Rermera 100% tela algodon re pro",200, 5, areas));
@@ -56,6 +58,8 @@ public class TpBaseApplication {
 			//productoBaseRepositorio.save(productoBase);
 
 			System.out.println(productoBase);
+
+			 */
 
 		};
 	}

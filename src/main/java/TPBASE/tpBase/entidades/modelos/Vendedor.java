@@ -1,7 +1,6 @@
 package TPBASE.tpBase.entidades.modelos;
 
-import TPBASE.tpBase.entidades.compras.CompraRealizada;
-import TPBASE.tpBase.entidades.enums.MetodoPago;
+import TPBASE.tpBase.entidades.metodosPagos.MetodoPago;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,11 +23,11 @@ public class Vendedor {
     @Column(name = "contrasenia")
     private String contrasenia;
 
-    @OneToOne
-    private CompraRealizada compraRealizada;
+    @Column(name = "nombre_tienda")
+    private String nombreTienda;
 
-    @Transient // revisar y fiajarse que cre una table intermedia
-    private List<MetodoPago> metodosPago;
+    @ManyToMany //funca
+    private List<MetodoPago> metodoPago;
 
     public void agregarProducto(){
 

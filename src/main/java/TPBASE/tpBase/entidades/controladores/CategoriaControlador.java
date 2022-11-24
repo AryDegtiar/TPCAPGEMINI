@@ -22,7 +22,7 @@ public class CategoriaControlador {
     }
 
     @GetMapping(path = {"/{categoriaID}"} )
-    Categoria obtenerAreaPersonalizacion(@PathVariable("categoriaID") Integer categoriaID){
+    Categoria obtenerCategorias(@PathVariable("categoriaID") Integer categoriaID){
         Optional<Categoria> categoria = categoriaRepositorio.findById(categoriaID);
         if (categoria.isPresent()){
             return categoria.get();

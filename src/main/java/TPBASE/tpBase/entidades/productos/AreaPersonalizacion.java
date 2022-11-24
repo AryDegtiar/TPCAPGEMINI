@@ -18,15 +18,11 @@ public class AreaPersonalizacion {
 
     @Column(name = "area")
     public String area;
-    @OneToMany // revisar y fiajarse que cre una table intermedia
-    public List<TipoPersonalizacion> tipoPersonalizaciones;
 
-    public AreaPersonalizacion(String area, List<TipoPersonalizacion> tipoPersonalizaciones) {
+    public AreaPersonalizacion(String area) {
         this.area = area;
-        this.tipoPersonalizaciones = tipoPersonalizaciones;
     }
 
     public AreaPersonalizacion() {
-        this.tipoPersonalizaciones = new ArrayList<>();
     }
 }

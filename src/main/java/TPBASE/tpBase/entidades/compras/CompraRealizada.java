@@ -1,6 +1,6 @@
 package TPBASE.tpBase.entidades.compras;
 
-import TPBASE.tpBase.entidades.enums.MetodoPago;
+import TPBASE.tpBase.entidades.enums.EnumMetodoPago;
 import TPBASE.tpBase.entidades.modelos.Cliente;
 import TPBASE.tpBase.entidades.modelos.Vendedor;
 import TPBASE.tpBase.entidades.productos.Publicacion;
@@ -24,17 +24,15 @@ public class CompraRealizada {
     @Column(name = "fecha", columnDefinition = "DATE")
     private LocalDate fecha;
     @OneToMany // revisar y fiajarse que cre una table intermedia
-    private List<Publicacion> productos;
+    private List<CantidadXProducto> cantidadXProductos;
     @Column(name = "precioTotal")
     private Integer precioTotal;
 
-    @Transient
-    private MetodoPago metodoPago;
+    @Enumerated(EnumType.STRING)
+    private EnumMetodoPago metodoPago;
 
-    @Transient
-    private Tienda tienda;
-
-    @Transient
-    private Cliente cliente;
+    @ManyToOne
+    @JoinColumn(name = "vendedor_CompraRealizada")
+    private Vendedor vendedor;
 
 }

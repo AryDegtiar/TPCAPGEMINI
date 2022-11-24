@@ -19,12 +19,12 @@ public class TipoPersonalizacionControlador {
 
 
     @GetMapping(path = {"","/"})
-    List<TipoPersonalizacion> categorias(){
+    List<TipoPersonalizacion> tiposPersonalizacion(){
         return tipoPersonalizacionRepositorio.findAll();
     }
 
     @GetMapping(path = {"/{tipoID}"} )
-    TipoPersonalizacion obtenerAreaPersonalizacion(@PathVariable("tipoID") Integer tipoID){
+    TipoPersonalizacion obtenerTipoPersonalizacion(@PathVariable("tipoID") Integer tipoID){
         Optional<TipoPersonalizacion> tipo = tipoPersonalizacionRepositorio.findById(tipoID);
         if (tipo.isPresent()){
             return tipo.get();
@@ -40,7 +40,7 @@ public class TipoPersonalizacionControlador {
     }
 
     @PostMapping(path = {"", "/"})
-    TipoPersonalizacion agregarCategoria(@RequestBody TipoPersonalizacion tipo){
+    TipoPersonalizacion agregaripoPersonalizacion(@RequestBody TipoPersonalizacion tipo){
         return tipoPersonalizacionRepositorio.save(tipo);
     }
 
