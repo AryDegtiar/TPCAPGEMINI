@@ -1,5 +1,6 @@
 package TPBASE.tpBase.entidades.productos;
 
+import TPBASE.tpBase.entidades.enums.EnumEstado;
 import TPBASE.tpBase.entidades.modelos.Vendedor;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +17,9 @@ public class Publicacion {
     @GeneratedValue
     private Integer publi_id;
 
+    @Enumerated(EnumType.STRING)
+    private EnumEstado estadoPublicacion;
+
     @ManyToOne
     @JoinColumn(name = "productoBase", referencedColumnName = "prodbase_id")
     private ProductoBase productoBase;
@@ -23,7 +27,6 @@ public class Publicacion {
     private List<Personalizacion> personalizaciones; // podria ser un set de personalizaciones
     @Column(name = "precioTotal")
     private Integer precioTotal;
-
 
     @ManyToOne
     @JoinColumn(name = "publicacion_x_vendedor")
