@@ -24,5 +24,4 @@ public class Personalizacion {
     @Column(name = "precio")
     private Integer precio;
 
-
 }

@@ -29,15 +29,10 @@ public class ProductoBase {
     @Column(name = "tiempoFabricacion")
     private Integer tiempoFabricacion;
 
-    /*
-    @OneToMany // creo que deberia ser un Set<PosiblePersonalizacion>
-    private List<PosiblePersonalizacion> posiblePersonalizaciones;
-     */
     @ManyToMany
     private List<PosiblePersonalizacion> posiblePersonalizaciones;
 
-    // puede no ir, si llego se hace sino nop C:
-    @Transient // revisar y fiajarse que cre una table intermedia
+    @Transient // puede no ir, si llego se hace sino nop C:
     private List<AtributoProducto> atributos;
 
     public ProductoBase() {

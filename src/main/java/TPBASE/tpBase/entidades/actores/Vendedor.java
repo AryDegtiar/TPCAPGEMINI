@@ -1,4 +1,4 @@
-package TPBASE.tpBase.entidades.modelos;
+package TPBASE.tpBase.entidades.actores;
 
 import TPBASE.tpBase.entidades.metodosPagos.MetodoPago;
 import lombok.Getter;

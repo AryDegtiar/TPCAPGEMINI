@@ -1,7 +1,7 @@
 package TPBASE.tpBase.entidades.productos;
 
 import TPBASE.tpBase.entidades.enums.EnumEstado;
-import TPBASE.tpBase.entidades.modelos.Vendedor;
+import TPBASE.tpBase.entidades.actores.Vendedor;
 import lombok.Getter;
 import lombok.Setter;
 

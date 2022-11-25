@@ -17,6 +17,7 @@ public class AtributoProducto {
 
     @Column(name = "modelo")
     private String modelo;
+
     @Transient
     private List<String> colores;
 

@@ -18,7 +18,7 @@ public class CantidadXProducto {
     @Column(name = "cantidad")
     private Integer cantidad;
 
-    @ManyToOne // REVISAR
+    @ManyToOne
     @JoinColumn(name = "publicacion_xcantidad")
     private Publicacion publicacion;
 

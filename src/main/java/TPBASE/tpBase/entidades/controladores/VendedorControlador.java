@@ -1,8 +1,6 @@
 package TPBASE.tpBase.entidades.controladores;
 
-import TPBASE.tpBase.entidades.modelos.Vendedor;
-import TPBASE.tpBase.entidades.productos.TipoPersonalizacion;
-import TPBASE.tpBase.entidades.repositorios.TipoPersonalizacionRepositorio;
+import TPBASE.tpBase.entidades.actores.Vendedor;
 import TPBASE.tpBase.entidades.repositorios.VendedorRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -1,9 +1,7 @@
 package TPBASE.tpBase.entidades.compras;
 
 import TPBASE.tpBase.entidades.enums.EnumMetodoPago;
-import TPBASE.tpBase.entidades.modelos.Cliente;
-import TPBASE.tpBase.entidades.modelos.Vendedor;
-import TPBASE.tpBase.entidades.productos.Publicacion;
+import TPBASE.tpBase.entidades.actores.Vendedor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,7 +22,7 @@ public class CompraRealizada {
     @Column(name = "fecha", columnDefinition = "DATE")
     private LocalDate fecha;
 
-    @OneToMany // revisar y fiajarse que cre una table intermedia
+    @OneToMany
     @JoinColumn(name = "compraRealizadaID", referencedColumnName = "comprareali_id")
     private List<CantidadXProducto> cantidadXProductos;
 
