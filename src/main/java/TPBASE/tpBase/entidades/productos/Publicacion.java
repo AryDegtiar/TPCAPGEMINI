@@ -24,7 +24,9 @@ public class Publicacion {
     @JoinColumn(name = "productoBase", referencedColumnName = "prodbase_id")
     private ProductoBase productoBase;
     @OneToMany // revisar y fiajarse que cre una table intermedia
+    @JoinColumn(name = "publicacionID", referencedColumnName = "publi_id")
     private List<Personalizacion> personalizaciones; // podria ser un set de personalizaciones
+
     @Column(name = "precioTotal")
     private Integer precioTotal;
 

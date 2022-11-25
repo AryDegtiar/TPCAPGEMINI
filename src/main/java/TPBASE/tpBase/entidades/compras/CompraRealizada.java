@@ -23,8 +23,11 @@ public class CompraRealizada {
 
     @Column(name = "fecha", columnDefinition = "DATE")
     private LocalDate fecha;
+
     @OneToMany // revisar y fiajarse que cre una table intermedia
+    @JoinColumn(name = "compraRealizadaID", referencedColumnName = "comprareali_id")
     private List<CantidadXProducto> cantidadXProductos;
+
     @Column(name = "precioTotal")
     private Integer precioTotal;
 

@@ -14,10 +14,8 @@ public class Personalizacion {
     @GeneratedValue
     private Integer perso_id;
 
-    @Column(name = "seleccionArea")
-    private String seleccionArea;
-    @Column(name = "seleccionTipo")
-    private String seleccionTipo;
+    @ManyToOne
+    private PosiblePersonalizacion posiblePersonalizacion;
 
     @Column(name = "nombre")
     private String nombre;

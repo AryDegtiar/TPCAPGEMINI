@@ -23,5 +23,6 @@ public class Cliente {
     private String contrasenia;
 
     @OneToMany
+    @JoinColumn(name = "clienteID", referencedColumnName = "clie_id")
     private List<CompraRealizada> compraRealizadas;
 }
