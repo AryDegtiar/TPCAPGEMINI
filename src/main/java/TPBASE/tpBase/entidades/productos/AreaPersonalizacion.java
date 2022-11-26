@@ -7,13 +7,6 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
-    *************************************************
-    * * * * * * * * * * * * * * * * * * * * * * * * *
-    *               NO SE ESTA USANDO               *
-    * * * * * * * * * * * * * * * * * * * * * * * * *
-    *************************************************
- */
 @Getter @Setter
 @Entity
 @Table(name = "area_personalizacion")

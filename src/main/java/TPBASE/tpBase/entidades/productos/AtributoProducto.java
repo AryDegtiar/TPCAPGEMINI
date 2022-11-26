@@ -6,6 +6,14 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.List;
 
+/*
+ *************************************************
+ * * * * * * * * * * * * * * * * * * * * * * * * *
+ *               NO SE ESTA USANDO               *
+ * * * * * * * * * * * * * * * * * * * * * * * * *
+ *************************************************
+ */
+
 @Getter @Setter
 @Entity
 @Table(name = "atributo_producto")
