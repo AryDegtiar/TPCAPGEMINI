@@ -38,7 +38,15 @@ public class PublicacionControlador {
     }
 
     @PostMapping(path = {"", "/"})
-    Publicacion agregaripoPublicacion(@RequestBody Publicacion publicacion){
+    Publicacion agregaripoPublicacion(@RequestBody Publicacion publicacion) {
+
+        //publicacion.getPersonalizaciones().forEach( personalizacion -> sumPersonalizaciones.sum(sumPersonalizaciones, personalizacion.getPrecio()) );
+        //publicacion.setPrecioTotal(precioBase + sumPersonalizaciones);
+
+        publicacion.setPrecioTotal(publicacion.getProductoBase().getPrecioBase()); // porque devuelve null?
+        System.out.println(publicacion.getPrecioTotal());
+
+
         return publicacionRepositorio.save(publicacion);
     }
 

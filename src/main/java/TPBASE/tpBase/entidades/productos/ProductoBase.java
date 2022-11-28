@@ -2,6 +2,7 @@ package TPBASE.tpBase.entidades.productos;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class ProductoBase {
     @Column(name = "tiempoFabricacion")
     private Integer tiempoFabricacion;
 
-    @ManyToMany()
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<PosiblePersonalizacion> posiblePersonalizaciones;
 
     @Transient // puede no ir, si llego se hace sino nop C:
