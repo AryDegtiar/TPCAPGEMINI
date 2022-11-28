@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TipoPersonalizacionRepositorio extends JpaRepository<TipoPersonalizacion, Integer> {
+    boolean existsByTipo(String nomArea);
+
+    TipoPersonalizacion findByTipo(String nomTipo);
 }

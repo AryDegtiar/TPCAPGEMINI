@@ -30,7 +30,7 @@ public class ProductoBase {
     @Column(name = "tiempoFabricacion")
     private Integer tiempoFabricacion;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     private List<PosiblePersonalizacion> posiblePersonalizaciones;
 
     @Transient // puede no ir, si llego se hace sino nop C:

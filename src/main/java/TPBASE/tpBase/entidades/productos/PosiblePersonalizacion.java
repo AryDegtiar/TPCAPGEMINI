@@ -14,11 +14,11 @@ public class PosiblePersonalizacion {
     @GeneratedValue
     private Integer posiblePersoID;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "posible_area_personalizacion")
     private AreaPersonalizacion areaPersonalizacion;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "posible_tipo_personalizacion")
     private TipoPersonalizacion tipoPersonalizacion;
 
