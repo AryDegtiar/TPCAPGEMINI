@@ -7,7 +7,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AreaPersonalizacionRepositorio extends JpaRepository<AreaPersonalizacion, Integer> {
 
-    AreaPersonalizacion findByArea(String area);
-
-    boolean existsByArea(String area);
 }

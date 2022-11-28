@@ -15,7 +15,6 @@ public class PublicacionControlador {
     @Autowired
     PublicacionRepositorio publicacionRepositorio;
 
-
     @GetMapping(path = {"","/"})
     List<Publicacion> vendedores(){
         return publicacionRepositorio.findAll();
