@@ -34,6 +34,25 @@ public class Publicacion {
     @JoinColumn(name = "publicacion_x_vendedor")
     private Vendedor vendedor;
 
+    public Publicacion(EnumEstado estadoPublicacion, ProductoBase productoBase, List<Personalizacion> personalizaciones, Vendedor vendedor) {
+        this.estadoPublicacion = estadoPublicacion;
+        this.productoBase = productoBase;
+        this.personalizaciones = personalizaciones;
+        this.vendedor = vendedor;
+        obtenerPrecioTotal(productoBase, personalizaciones);
+    }
+
+    public void obtenerPrecioTotal(ProductoBase productoBase, List<Personalizacion> personalizaciones){
+        Integer precioTotal = productoBase.getPrecioBase();
+        for (Personalizacion p : personalizaciones){
+            precioTotal = precioTotal + p.getPrecio();
+        }
+        this.setPrecioTotal(precioTotal);
+    }
+
+    public Publicacion() {
+    }
+
     public void agregarPersonalizacion(Personalizacion personalizacion){
         this.personalizaciones.add(personalizacion);
     }

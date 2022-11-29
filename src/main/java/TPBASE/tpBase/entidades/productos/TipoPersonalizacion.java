@@ -20,4 +20,8 @@ public class TipoPersonalizacion {
     public TipoPersonalizacion(){
 
     }
+
+    public TipoPersonalizacion(String tipo) {
+        this.tipo = tipo;
+    }
 }

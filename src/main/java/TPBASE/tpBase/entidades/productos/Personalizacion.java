@@ -24,4 +24,12 @@ public class Personalizacion {
     @Column(name = "precio")
     private Integer precio;
 
+    public Personalizacion(PosiblePersonalizacion posiblePersonalizacion, String nombre, String contenido, Integer precio) {
+        this.posiblePersonalizacion = posiblePersonalizacion;
+        this.nombre = nombre;
+        this.contenido = contenido;
+        this.precio = precio;
+    }
+    public Personalizacion() {
+    }
 }

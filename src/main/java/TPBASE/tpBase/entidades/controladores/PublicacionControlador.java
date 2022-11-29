@@ -1,6 +1,10 @@
 package TPBASE.tpBase.entidades.controladores;
 
+import TPBASE.tpBase.entidades.productos.Personalizacion;
+import TPBASE.tpBase.entidades.productos.ProductoBase;
 import TPBASE.tpBase.entidades.productos.Publicacion;
+import TPBASE.tpBase.entidades.repositorios.PersonalizacionRepositorio;
+import TPBASE.tpBase.entidades.repositorios.ProductoBaseRepositorio;
 import TPBASE.tpBase.entidades.repositorios.PublicacionRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +18,11 @@ public class PublicacionControlador {
 
     @Autowired
     PublicacionRepositorio publicacionRepositorio;
+
+    @Autowired
+    ProductoBaseRepositorio productoBaseRepositorio;
+    @Autowired
+    PersonalizacionRepositorio personalizacionRepositorio;
 
     @GetMapping(path = {"","/"})
     List<Publicacion> vendedores(){
@@ -39,11 +48,14 @@ public class PublicacionControlador {
     @PostMapping(path = {"", "/"})
     Publicacion agregaripoPublicacion(@RequestBody Publicacion publicacion) {
 
-        //publicacion.getPersonalizaciones().forEach( personalizacion -> sumPersonalizaciones.sum(sumPersonalizaciones, personalizacion.getPrecio()) );
-        //publicacion.setPrecioTotal(precioBase + sumPersonalizaciones);
+        ProductoBase productoBase = productoBaseRepositorio.findById(publicacion.getProductoBase().getProdbase_id()).get();
+        Integer precioTotal = productoBase.getPrecioBase();
 
-        publicacion.setPrecioTotal(publicacion.getProductoBase().getPrecioBase()); // porque devuelve null?
-        System.out.println(publicacion.getPrecioTotal());
+        for (Personalizacion p : publicacion.getPersonalizaciones()){
+            Personalizacion personalizacion = personalizacionRepositorio.findById(p.getPerso_id()).get();
+            precioTotal = precioTotal + personalizacion.getPrecio();
+        }
+        publicacion.setPrecioTotal(precioTotal);
 
 
         return publicacionRepositorio.save(publicacion);

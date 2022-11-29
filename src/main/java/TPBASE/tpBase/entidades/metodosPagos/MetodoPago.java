@@ -20,4 +20,8 @@ public class MetodoPago {
 
     public MetodoPago() {
     }
+
+    public MetodoPago(EnumMetodoPago metodoPago) {
+        this.metodoPago = metodoPago;
+    }
 }

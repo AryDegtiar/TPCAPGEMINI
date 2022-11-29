@@ -29,15 +29,14 @@ public class Vendedor {
     @ManyToMany //funca
     private List<MetodoPago> metodoPago;
 
-    public void agregarProducto(){
-
+    public Vendedor(String mail, String contrasenia, String nombreTienda, List<MetodoPago> metodoPago) {
+        this.mail = mail;
+        this.contrasenia = contrasenia;
+        this.nombreTienda = nombreTienda;
+        this.metodoPago = metodoPago;
     }
 
-    public void pausarProducto(){
-
+    public Vendedor() {
     }
 
-    public void eliminarProducto(){
-
-    }
 }
