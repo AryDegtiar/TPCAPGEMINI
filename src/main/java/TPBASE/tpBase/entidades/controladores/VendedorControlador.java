@@ -5,6 +5,7 @@ import TPBASE.tpBase.entidades.repositorios.VendedorRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,7 +39,7 @@ public class VendedorControlador {
     }
 
     @PostMapping(path = {"", "/"})
-    Vendedor agregaripoVendedor(@RequestBody Vendedor vendedor){
+    Vendedor agregaripoVendedor(@Valid @RequestBody Vendedor vendedor){
         return vendedorRepositorio.save(vendedor);
     }
 

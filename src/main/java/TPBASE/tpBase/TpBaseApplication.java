@@ -84,15 +84,7 @@ public class TpBaseApplication {
 			Vendedor vendedor1 = vendedorRepositorio.save(new Vendedor("mail@gmail.com", "123", "NIKE", metodosPagos));
 
 			Publicacion publicacion = (new Publicacion(EnumEstado.DISPONIBLE, productoBase, personalizaciones, vendedor1));
-			/*
-			Integer precioTotal = publicacion.getProductoBase().getPrecioBase();
-			for (Personalizacion p : personalizaciones){
-				precioTotal = precioTotal + p.getPrecio();
-			}
-			publicacion.setPrecioTotal(precioTotal); */
 			publicacion = publicacionRepositorio.save(publicacion);
-
-
 
 		};
 	}
