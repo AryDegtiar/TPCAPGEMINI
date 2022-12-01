@@ -23,6 +23,7 @@ public class Publicacion {
     @ManyToOne
     @JoinColumn(name = "productoBase", referencedColumnName = "prodbase_id")
     private ProductoBase productoBase;
+
     @OneToMany
     @JoinColumn(name = "publicacionID", referencedColumnName = "publi_id")
     private List<Personalizacion> personalizaciones; 
