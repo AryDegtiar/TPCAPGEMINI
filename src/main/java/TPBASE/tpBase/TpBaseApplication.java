@@ -1,7 +1,6 @@
 package TPBASE.tpBase;
 
 import TPBASE.tpBase.entidades.actores.Vendedor;
-import TPBASE.tpBase.entidades.controladores.PublicacionControlador;
 import TPBASE.tpBase.entidades.enums.EnumEstado;
 import TPBASE.tpBase.entidades.enums.EnumMetodoPago;
 import TPBASE.tpBase.entidades.metodosPagos.MetodoPago;
@@ -13,10 +12,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @SpringBootApplication
 public class TpBaseApplication {
@@ -63,27 +58,24 @@ public class TpBaseApplication {
 			PosiblePersonalizacion posPechoTxt = posiblePersonalizacionRepositorio.save(new PosiblePersonalizacion(areaPecho, tipoTxt));
 			PosiblePersonalizacion posEspaldaImg = posiblePersonalizacionRepositorio.save(new PosiblePersonalizacion(areaEspalda, tipoImg));
 
-			List<PosiblePersonalizacion> listPosiblesPersonalizaciones = new ArrayList<>();
-			listPosiblesPersonalizaciones.add(posPechoImg);
-			listPosiblesPersonalizaciones.add(posEspaldaImg);
+			ProductoBase productoBase = new ProductoBase(catRemeras, "REMERA SPIDERMAN", "descripcion", 360, 2);
+			productoBase.addPosiblePersonalizacion(posPechoImg);
+			productoBase.addPosiblePersonalizacion(posEspaldaImg);
+			productoBase = productoBaseRepositorio.save(productoBase);
 
-			ProductoBase productoBase = productoBaseRepositorio.save(new ProductoBase(catRemeras, "REMERA SPIDERMAN", "descripcion", 360, 2, listPosiblesPersonalizaciones));
 
 			Personalizacion personalizacionPechoImg = personalizacionRepositorio.save(new Personalizacion(posPechoImg, "imagen de telarania", "linkContenido", 50));
-
-			List<Personalizacion> personalizaciones = new ArrayList<>();
-			personalizaciones.add(personalizacionPechoImg);
 
 			MetodoPago metodoPagoEfectivo = metodoPagoRepositorio.save(new MetodoPago(EnumMetodoPago.EFECTIVO));
 			MetodoPago metodoPagoCredVisa = metodoPagoRepositorio.save(new MetodoPago(EnumMetodoPago.CREDITO_VISA));
 
-			List<MetodoPago> metodosPagos = new ArrayList<>();
-			metodosPagos.add(metodoPagoEfectivo);
-			metodosPagos.add(metodoPagoCredVisa);
+			Vendedor vendedor1 = new Vendedor("mail@gmail.com", "123", "NIKE");
+			vendedor1.addMetodoPago(metodoPagoEfectivo);
+			vendedor1.addMetodoPago(metodoPagoCredVisa);
+			vendedor1 = vendedorRepositorio.save(vendedor1);
 
-			Vendedor vendedor1 = vendedorRepositorio.save(new Vendedor("mail@gmail.com", "123", "NIKE", metodosPagos));
-
-			Publicacion publicacion = (new Publicacion(EnumEstado.DISPONIBLE, productoBase, personalizaciones, vendedor1));
+			Publicacion publicacion = (new Publicacion(EnumEstado.DISPONIBLE, productoBase, vendedor1));
+			publicacion.addPersonalizacion(personalizacionPechoImg);
 			publicacion = publicacionRepositorio.save(publicacion);
 
 		};

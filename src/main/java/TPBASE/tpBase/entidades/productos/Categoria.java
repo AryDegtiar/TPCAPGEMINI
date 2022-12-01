@@ -1,7 +1,7 @@
 package TPBASE.tpBase.entidades.productos;
 
+import TPBASE.tpBase.entidades.superclases.EntidadPersistente;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -9,11 +9,7 @@ import javax.persistence.*;
 @Getter @Setter
 @Entity
 @Table(name = "categoria")
-public class Categoria {
-    @Getter
-    @Id
-    @GeneratedValue
-    private Integer cat_id;
+public class Categoria extends EntidadPersistente {
 
     @Column(name = "categoria")
     private String nombre;

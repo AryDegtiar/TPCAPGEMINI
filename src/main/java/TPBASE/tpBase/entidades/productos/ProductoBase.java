@@ -1,8 +1,8 @@
 package TPBASE.tpBase.entidades.productos;
 
+import TPBASE.tpBase.entidades.superclases.EntidadPersistente;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -11,14 +11,9 @@ import java.util.List;
 @Getter @Setter
 @Entity
 @Table(name = "producto_base")
-public class ProductoBase {
-    @Getter
-    @Id
-    @GeneratedValue
-    private Integer prodbase_id;
-
+public class ProductoBase extends EntidadPersistente {
     @ManyToOne
-    @JoinColumn(name = "categoria_id", referencedColumnName = "cat_id")
+    @JoinColumn(name = "categoria_id", referencedColumnName = "id")
     private Categoria categoria;
 
     @Column(name = "nombre")
@@ -41,12 +36,17 @@ public class ProductoBase {
         this.atributos = new ArrayList<>();
     }
 
-    public ProductoBase(Categoria categoria, String nombre, String descripcion, Integer precioBase, Integer tiempoFabricacion, List<PosiblePersonalizacion> posiblePersonalizaciones) {
+    public ProductoBase(Categoria categoria, String nombre, String descripcion, Integer precioBase, Integer tiempoFabricacion) {
+        this();
         this.categoria = categoria;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precioBase = precioBase;
         this.tiempoFabricacion = tiempoFabricacion;
-        this.posiblePersonalizaciones = posiblePersonalizaciones;
     }
+
+    public void addPosiblePersonalizacion(PosiblePersonalizacion posiblePersonalizacion){
+        this.posiblePersonalizaciones.add(posiblePersonalizacion);
+    }
+
 }

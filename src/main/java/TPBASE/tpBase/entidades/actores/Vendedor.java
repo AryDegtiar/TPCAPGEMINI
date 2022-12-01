@@ -1,6 +1,7 @@
 package TPBASE.tpBase.entidades.actores;
 
 import TPBASE.tpBase.entidades.metodosPagos.MetodoPago;
+import TPBASE.tpBase.entidades.superclases.EntidadPersistente;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,18 +10,14 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "vendedor")
-public class Vendedor {
-    @Getter
-    @Id
-    @GeneratedValue
-    private Integer vendedor_id;
-
+public class Vendedor extends EntidadPersistente {
     @Email(message = "Mail invalido")
     @NotBlank(message = "Mail invalido")
     @Column(name = "mail")
@@ -39,16 +36,21 @@ public class Vendedor {
     @NotNull(message = "Metodo de pago invalido")
     @NotEmpty(message = "Metodo de pago invalido")
     @ManyToMany //funca
-    private List<MetodoPago> metodoPago;
+    private List<MetodoPago> metodoPagos;
 
-    public Vendedor(String mail, String contrasenia, String nombreTienda, List<MetodoPago> metodoPago) {
+    public Vendedor(String mail, String contrasenia, String nombreTienda) {
+        this();
         this.mail = mail;
         this.contrasenia = contrasenia;
         this.nombreTienda = nombreTienda;
-        this.metodoPago = metodoPago;
     }
 
     public Vendedor() {
+         this.metodoPagos = new ArrayList<>();
+    }
+
+    public void addMetodoPago(MetodoPago metodoPago){
+        this.metodoPagos.add(metodoPago);
     }
 
 }

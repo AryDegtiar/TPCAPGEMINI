@@ -1,6 +1,7 @@
 package TPBASE.tpBase.entidades.actores;
 
 import TPBASE.tpBase.entidades.compras.CompraRealizada;
+import TPBASE.tpBase.entidades.superclases.EntidadPersistente;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,11 +12,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "cliente")
-public class Cliente {
-    @Getter
-    @Id
-    @GeneratedValue
-    private Integer clie_id;
+public class Cliente extends EntidadPersistente {
 
     @Column(name = "mail")
     private String mail;
@@ -23,6 +20,6 @@ public class Cliente {
     private String contrasenia;
 
     @OneToMany
-    @JoinColumn(name = "clienteID", referencedColumnName = "clie_id")
+    @JoinColumn(name = "clienteID", referencedColumnName = "id")
     private List<CompraRealizada> compraRealizadas;
 }

@@ -1,5 +1,6 @@
 package TPBASE.tpBase.entidades.productos;
 
+import TPBASE.tpBase.entidades.superclases.EntidadPersistente;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,11 +18,7 @@ import java.util.List;
 @Getter @Setter
 @Entity
 @Table(name = "atributo_producto")
-public class AtributoProducto {
-    @Getter
-    @Id
-    @GeneratedValue
-    private Integer atribperso_id;
+public class AtributoProducto extends EntidadPersistente {
 
     @Column(name = "modelo")
     private String modelo;

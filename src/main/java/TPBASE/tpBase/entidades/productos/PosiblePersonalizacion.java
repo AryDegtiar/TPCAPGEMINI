@@ -1,5 +1,6 @@
 package TPBASE.tpBase.entidades.productos;
 
+import TPBASE.tpBase.entidades.superclases.EntidadPersistente;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,11 +10,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name = "posiblePersonalizacion")
-public class PosiblePersonalizacion {
-    @Id
-    @GeneratedValue
-    private Integer posiblePersoID;
-
+public class PosiblePersonalizacion extends EntidadPersistente {
     @ManyToOne
     @JoinColumn(name = "posible_area_personalizacion")
     private AreaPersonalizacion areaPersonalizacion;
