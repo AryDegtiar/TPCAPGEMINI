@@ -14,10 +14,6 @@ import java.util.List;
 @Entity
 @Table(name = "publicacion")
 public class Publicacion extends EntidadPersistente {
-    @Id
-    @GeneratedValue
-    private Integer id;
-
     @Enumerated(EnumType.STRING)
     private EnumEstado estadoPublicacion;
 

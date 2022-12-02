@@ -63,8 +63,8 @@ public class TpBaseApplication {
 			productoBase.addPosiblePersonalizacion(posEspaldaImg);
 			productoBase = productoBaseRepositorio.save(productoBase);
 
-
 			Personalizacion personalizacionPechoImg = personalizacionRepositorio.save(new Personalizacion(posPechoImg, "imagen de telarania", "linkContenido", 50));
+			Personalizacion personalizacionPechoTxt = personalizacionRepositorio.save(new Personalizacion(posPechoTxt, "texto bambino", "linkContenido", 50));
 
 			MetodoPago metodoPagoEfectivo = metodoPagoRepositorio.save(new MetodoPago(EnumMetodoPago.EFECTIVO));
 			MetodoPago metodoPagoCredVisa = metodoPagoRepositorio.save(new MetodoPago(EnumMetodoPago.CREDITO_VISA));
@@ -76,7 +76,9 @@ public class TpBaseApplication {
 
 			Publicacion publicacion = (new Publicacion(EnumEstado.DISPONIBLE, productoBase, vendedor1));
 			publicacion.addPersonalizacion(personalizacionPechoImg);
+			publicacion.addPersonalizacion(personalizacionPechoTxt);
 			publicacion = publicacionRepositorio.save(publicacion);
+
 
 		};
 	}

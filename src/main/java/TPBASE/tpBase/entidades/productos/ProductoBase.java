@@ -24,7 +24,6 @@ public class ProductoBase extends EntidadPersistente {
     private Integer precioBase;
     @Column(name = "tiempoFabricacion")
     private Integer tiempoFabricacion;
-
     @ManyToMany
     private List<PosiblePersonalizacion> posiblePersonalizaciones;
 

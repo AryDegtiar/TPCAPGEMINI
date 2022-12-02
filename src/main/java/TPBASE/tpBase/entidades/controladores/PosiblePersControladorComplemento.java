@@ -21,7 +21,8 @@ public class PosiblePersControladorComplemento {
 
     @PostMapping(path = "/posiblepersonalizacion")
     public @ResponseBody ResponseEntity<PosiblePersonalizacion> agregarPosiblePersonalizacion(@RequestBody PosiblePersonalizacion posiblePersonalizacion){
-        
+        //Integer id = posiblePersonalizacion.getAreaPersonalizacion().;
+        //posiblePersonalizacion.setAreaPersonalizacion();
         repo.save(posiblePersonalizacion);
         return ResponseEntity.ok().build();
     }
