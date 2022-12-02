@@ -4,11 +4,11 @@ import TPBASE.tpBase.entidades.productos.AreaPersonalizacion;
 import TPBASE.tpBase.entidades.productos.TipoPersonalizacion;
 import lombok.Getter;
 
+@Getter
 public class PosiblePersonalizacionDTOsetter {
 
-    @Getter
     private Integer areaPersonalizacionId;
-    @Getter
+
     private Integer tipoPersonalizacionId;
 
 }
