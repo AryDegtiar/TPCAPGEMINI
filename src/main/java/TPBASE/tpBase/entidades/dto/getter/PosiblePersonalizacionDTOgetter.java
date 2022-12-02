@@ -1,4 +1,4 @@
-package TPBASE.tpBase.entidades.dto;
+package TPBASE.tpBase.entidades.dto.getter;
 
 import TPBASE.tpBase.entidades.productos.AreaPersonalizacion;
 import TPBASE.tpBase.entidades.productos.PosiblePersonalizacion;

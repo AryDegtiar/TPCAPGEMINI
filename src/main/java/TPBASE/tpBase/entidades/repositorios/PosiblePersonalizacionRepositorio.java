@@ -1,6 +1,6 @@
 package TPBASE.tpBase.entidades.repositorios;
 
-import TPBASE.tpBase.entidades.dto.PosiblePersonalizacionDTOgetter;
+import TPBASE.tpBase.entidades.dto.getter.PosiblePersonalizacionDTOgetter;
 import TPBASE.tpBase.entidades.productos.AreaPersonalizacion;
 import TPBASE.tpBase.entidades.productos.PosiblePersonalizacion;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

@@ -1,4 +1,4 @@
-package TPBASE.tpBase.entidades.dto;
+package TPBASE.tpBase.entidades.dto.getter;
 
 import TPBASE.tpBase.entidades.actores.Vendedor;
 import TPBASE.tpBase.entidades.enums.EnumEstado;

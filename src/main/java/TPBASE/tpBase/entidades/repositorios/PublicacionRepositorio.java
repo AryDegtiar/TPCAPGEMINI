@@ -1,13 +1,10 @@
 package TPBASE.tpBase.entidades.repositorios;
 
-import TPBASE.tpBase.entidades.dto.PublicacionDTOgetter;
+import TPBASE.tpBase.entidades.dto.getter.PublicacionDTOgetter;
 import TPBASE.tpBase.entidades.productos.Publicacion;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
-import org.springframework.stereotype.Repository;
-
-import java.util.concurrent.atomic.AtomicReference;
 
 @JsonPropertyOrder({"id","activo","estadoPublicacion","vendedor","precioTotal","productoBase","personalizaciones","productoBase"})
 @RepositoryRestResource(path = "publicacion", excerptProjection = PublicacionDTOgetter.class)
