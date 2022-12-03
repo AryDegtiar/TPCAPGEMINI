@@ -2,6 +2,7 @@ package TPBASE.tpBase.entidades.controladores;
 
 import TPBASE.tpBase.entidades.dto.setter.PublicacionDTOsetter;
 import TPBASE.tpBase.entidades.productos.Personalizacion;
+import TPBASE.tpBase.entidades.productos.PosiblePersonalizacion;
 import TPBASE.tpBase.entidades.productos.ProductoBase;
 import TPBASE.tpBase.entidades.productos.Publicacion;
 import TPBASE.tpBase.entidades.repositorios.PersonalizacionRepositorio;
@@ -34,17 +35,20 @@ public class PublicacionControladorComplemento {
     public @ResponseBody ResponseEntity<Publicacion> agregarPublicacion(@RequestBody PublicacionDTOsetter publicacionDTOsetter) {
 
         // ROMPE LA PERSONALIZACIONES NOSE PORQUE
+
+        List<Integer> personalizacionesId = publicacionDTOsetter.getPersonalizacionesId();
         List<Personalizacion> personalizaciones = new ArrayList<>();
         for(Integer personalizacionId : publicacionDTOsetter.getPersonalizacionesId()){
+            System.out.println("ENTRE " + personalizacionId);
             Personalizacion personalizacion = personalizacionRepo.findById(personalizacionId).get();
             personalizaciones.add(personalizacion);
         }
 
+
         Publicacion publicacion = new Publicacion();
         publicacion.setEstadoPublicacion(publicacionDTOsetter.getEstadoPublicacion());
         publicacion.setProductoBase(productoBaseRepo.findById(publicacionDTOsetter.getProductoBaseId()).get());
-        //publicacion.setPersonalizaciones(personalizaciones);
-        System.out.println(personalizaciones.toArray().toString());
+        publicacion.setPersonalizaciones(personalizaciones);
         publicacion.setVendedor( vendedorRepo.findById(publicacionDTOsetter.getVendedorId()).get() );
 
         repo.save(publicacion);
