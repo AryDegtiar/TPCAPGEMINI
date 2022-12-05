@@ -27,20 +27,30 @@ public class VendedorControladorComplemento {
 
     @PostMapping(path = "/vendedor")
     public @ResponseBody ResponseEntity<Vendedor> agregarPosiblePersonalizacion(@RequestBody VendedorDTOsetter vendedorDTOsetter) {
+        boolean notFoundMetodoPago = true;
         List<MetodoPago> metodosPagos = new ArrayList<>();
         for(Integer metodoPagoId : vendedorDTOsetter.getMetodosPagosId()){
-            MetodoPago metodoPago = metodoPagoRepo.findById(metodoPagoId).get();
-            metodosPagos.add(metodoPago);
+            if (metodoPagoRepo.existsById(metodoPagoId)) {
+                MetodoPago metodoPago = metodoPagoRepo.findById(metodoPagoId).get();
+                metodosPagos.add(metodoPago);
+                notFoundMetodoPago = false;
+            }else{
+                notFoundMetodoPago = true;
+            }
         }
 
-        Vendedor vendedor = new Vendedor();
-        vendedor.setMail(vendedorDTOsetter.getMail());
-        vendedor.setContrasenia(vendedorDTOsetter.getContrasenia());
-        vendedor.setNombreTienda(vendedorDTOsetter.getNombreTienda());
-        vendedor.setMetodoPagos(metodosPagos);
+        if (notFoundMetodoPago) {
+            return ResponseEntity.notFound().build();
+        }else{
+            Vendedor vendedor = new Vendedor();
+            vendedor.setMail(vendedorDTOsetter.getMail());
+            vendedor.setContrasenia(vendedorDTOsetter.getContrasenia());
+            vendedor.setNombreTienda(vendedorDTOsetter.getNombreTienda());
+            vendedor.setMetodoPagos(metodosPagos);
 
-        repo.save(vendedor);
-        return new ResponseEntity<Vendedor>(vendedor, HttpStatus.OK);
+            repo.save(vendedor);
+            return new ResponseEntity<Vendedor>(vendedor, HttpStatus.OK);
+        }
     }
 
     @DeleteMapping(path = {"/vendedor/{vendedorID}"})

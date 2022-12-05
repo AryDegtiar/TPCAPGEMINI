@@ -1,5 +1,6 @@
 package TPBASE.tpBase.entidades.controladores;
 
+import TPBASE.tpBase.entidades.actores.Vendedor;
 import TPBASE.tpBase.entidades.dto.setter.PublicacionDTOsetter;
 import TPBASE.tpBase.entidades.productos.Personalizacion;
 import TPBASE.tpBase.entidades.productos.PosiblePersonalizacion;
@@ -34,25 +35,46 @@ public class PublicacionControladorComplemento {
     @PostMapping(path = "/publicacion")
     public @ResponseBody ResponseEntity<Publicacion> agregarPublicacion(@RequestBody PublicacionDTOsetter publicacionDTOsetter) {
 
-        // ROMPE LA PERSONALIZACIONES NOSE PORQUE
-
-        List<Integer> personalizacionesId = publicacionDTOsetter.getPersonalizacionesId();
-        List<Personalizacion> personalizaciones = new ArrayList<>();
-        for(Integer personalizacionId : publicacionDTOsetter.getPersonalizacionesId()){
-            System.out.println("ENTRE " + personalizacionId);
-            Personalizacion personalizacion = personalizacionRepo.findById(personalizacionId).get();
-            personalizaciones.add(personalizacion);
+        boolean notFoundProductoBase = false;
+        ProductoBase productoBase = null;
+        if (productoBaseRepo.existsById(publicacionDTOsetter.getProductoBaseId())) {
+            productoBase = productoBaseRepo.findById(publicacionDTOsetter.getProductoBaseId()).get();
+        } else {
+            notFoundProductoBase = true;
         }
 
+        boolean notFoundVendedor = false;
+        Vendedor vendedor = null;
+        if (vendedorRepo.existsById(publicacionDTOsetter.getVendedorId())) {
+            vendedor = vendedorRepo.findById(publicacionDTOsetter.getVendedorId()).get();
+        } else {
+            notFoundVendedor = true;
+        }
 
-        Publicacion publicacion = new Publicacion();
-        publicacion.setEstadoPublicacion(publicacionDTOsetter.getEstadoPublicacion());
-        publicacion.setProductoBase(productoBaseRepo.findById(publicacionDTOsetter.getProductoBaseId()).get());
-        publicacion.setPersonalizaciones(personalizaciones);
-        publicacion.setVendedor( vendedorRepo.findById(publicacionDTOsetter.getVendedorId()).get() );
+        boolean notFoundPersonalizacion = false;
+        List<Personalizacion> personalizaciones = new ArrayList<>();
+        for (Integer personalizacionId : publicacionDTOsetter.getPersonalizacionesId()) {
+            if (personalizacionRepo.existsById(personalizacionId)) {
+                Personalizacion personalizacion = personalizacionRepo.findById(personalizacionId).get();
+                personalizaciones.add(personalizacion);
+            } else {
+                notFoundPersonalizacion = true;
+            }
+        }
 
-        repo.save(publicacion);
-        return new ResponseEntity<Publicacion>(publicacion, HttpStatus.OK);
+        if (notFoundProductoBase == true || notFoundVendedor == true || notFoundPersonalizacion == true) {
+            return ResponseEntity.notFound().build();
+        } else {
+            Publicacion publicacion = new Publicacion();
+            publicacion.setEstadoPublicacion(publicacionDTOsetter.getEstadoPublicacion());
+            publicacion.setProductoBase(productoBase);
+            publicacion.setPersonalizaciones(personalizaciones);
+            publicacion.setVendedor(vendedor);
+
+            repo.save(publicacion);
+            return new ResponseEntity<Publicacion>(publicacion, HttpStatus.OK);
+
+        }
     }
 
     @DeleteMapping(path = {"/publicacion/{publicacionID}"})

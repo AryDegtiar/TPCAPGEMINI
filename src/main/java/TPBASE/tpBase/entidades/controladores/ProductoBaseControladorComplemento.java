@@ -38,13 +38,14 @@ public class ProductoBaseControladorComplemento {
             notFoundCategoria = false;
         }
 
-        boolean notFoundPersonalizacion = true;
+        boolean notFoundPersonalizacion = false;
         List<PosiblePersonalizacion> posiblesPersonalizaciones = new ArrayList<>();
         for(Integer posiblePersonalizacionId : productoBaseDTOsetter.getPosiblePersonalizacionesId()){
             if (posiblePersoRepo.existsById(posiblePersonalizacionId)) {
                 PosiblePersonalizacion posiblePersonalizacion = posiblePersoRepo.findById(posiblePersonalizacionId).get();
                 posiblesPersonalizaciones.add(posiblePersonalizacion);
-                notFoundPersonalizacion = false;
+            }else{
+                notFoundPersonalizacion = true;
             }
         }
 
