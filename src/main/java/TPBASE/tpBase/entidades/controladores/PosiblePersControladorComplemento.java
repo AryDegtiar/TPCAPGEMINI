@@ -28,15 +28,19 @@ public class PosiblePersControladorComplemento {
 
     @PostMapping(path = "/posiblepersonalizacion")
     public @ResponseBody ResponseEntity<PosiblePersonalizacion> agregarPosiblePersonalizacion(@RequestBody PosiblePersonalizacionDTOsetter posiblePersonalizacionDTOsetter){
-        AreaPersonalizacion area = areaRepo.findById(posiblePersonalizacionDTOsetter.getAreaPersonalizacionId()).get();
-        TipoPersonalizacion tipo = tipoRepo.findById(posiblePersonalizacionDTOsetter.getTipoPersonalizacionId()).get();
+        if (areaRepo.existsById(posiblePersonalizacionDTOsetter.getTipoPersonalizacionId()) && tipoRepo.existsById(posiblePersonalizacionDTOsetter.getTipoPersonalizacionId())) {
+            AreaPersonalizacion area = areaRepo.findById(posiblePersonalizacionDTOsetter.getAreaPersonalizacionId()).get();
+            TipoPersonalizacion tipo = tipoRepo.findById(posiblePersonalizacionDTOsetter.getTipoPersonalizacionId()).get();
 
-        PosiblePersonalizacion posiblePersonalizacion = new PosiblePersonalizacion();
-        posiblePersonalizacion.setAreaPersonalizacion(area);
-        posiblePersonalizacion.setTipoPersonalizacion(tipo);
+            PosiblePersonalizacion posiblePersonalizacion = new PosiblePersonalizacion();
+            posiblePersonalizacion.setAreaPersonalizacion(area);
+            posiblePersonalizacion.setTipoPersonalizacion(tipo);
 
-        repo.save(posiblePersonalizacion);
-        return new ResponseEntity<PosiblePersonalizacion>(posiblePersonalizacion, HttpStatus.OK);
+            repo.save(posiblePersonalizacion);
+            return new ResponseEntity<PosiblePersonalizacion>(posiblePersonalizacion, HttpStatus.OK);
+        }else{
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping(path = {"/posiblepersonalizacion/{posiblePersoID}"})

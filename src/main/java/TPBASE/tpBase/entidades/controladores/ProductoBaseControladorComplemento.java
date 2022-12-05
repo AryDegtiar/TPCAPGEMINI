@@ -29,25 +29,40 @@ public class ProductoBaseControladorComplemento {
     @Autowired
     CategoriaRepositorio categoriaRepo;
 
-    @PostMapping(path = "/produtobase")
+    @PostMapping(path = "/productobase")
     public @ResponseBody ResponseEntity<ProductoBase> agregarPosiblePersonalizacion(@RequestBody ProductoBaseDTOsetter productoBaseDTOsetter){
-        Categoria categoria = categoriaRepo.findById(productoBaseDTOsetter.getCategoriaId()).get();
-        List<PosiblePersonalizacion> posiblesPersonalizaciones = new ArrayList<>();
-        for(Integer posiblePersonalizacionId : productoBaseDTOsetter.getPosiblePersonalizacionesId()){
-            PosiblePersonalizacion posiblePersonalizacion = posiblePersoRepo.findById(posiblePersonalizacionId).get();
-            posiblesPersonalizaciones.add(posiblePersonalizacion);
+        boolean notFoundCategoria = true;
+        Categoria categoria = null;
+        if ( categoriaRepo.existsById(productoBaseDTOsetter.getCategoriaId()) ) {
+            categoria = categoriaRepo.findById(productoBaseDTOsetter.getCategoriaId()).get();
+            notFoundCategoria = false;
         }
 
-        ProductoBase productoBase = new ProductoBase();
-        productoBase.setCategoria(categoria);
-        productoBase.setNombre(productoBaseDTOsetter.getNombre());
-        productoBase.setDescripcion(productoBaseDTOsetter.getDescripcion());
-        productoBase.setPrecioBase(productoBaseDTOsetter.getPrecioBase());
-        productoBase.setTiempoFabricacion(productoBaseDTOsetter.getTiempoFabricacion());
-        productoBase.setPosiblePersonalizaciones(posiblesPersonalizaciones);
+        boolean notFoundPersonalizacion = true;
+        List<PosiblePersonalizacion> posiblesPersonalizaciones = new ArrayList<>();
+        for(Integer posiblePersonalizacionId : productoBaseDTOsetter.getPosiblePersonalizacionesId()){
+            if (posiblePersoRepo.existsById(posiblePersonalizacionId)) {
+                PosiblePersonalizacion posiblePersonalizacion = posiblePersoRepo.findById(posiblePersonalizacionId).get();
+                posiblesPersonalizaciones.add(posiblePersonalizacion);
+                notFoundPersonalizacion = false;
+            }
+        }
 
-        repo.save(productoBase);
-        return new ResponseEntity<ProductoBase>(productoBase, HttpStatus.OK);
+        if (notFoundCategoria == true || notFoundPersonalizacion == true){
+            return ResponseEntity.notFound().build();
+        }else{
+            ProductoBase productoBase = new ProductoBase();
+            productoBase.setCategoria(categoria);
+            productoBase.setNombre(productoBaseDTOsetter.getNombre());
+            productoBase.setDescripcion(productoBaseDTOsetter.getDescripcion());
+            productoBase.setPrecioBase(productoBaseDTOsetter.getPrecioBase());
+            productoBase.setTiempoFabricacion(productoBaseDTOsetter.getTiempoFabricacion());
+            productoBase.setPosiblePersonalizaciones(posiblesPersonalizaciones);
+
+            repo.save(productoBase);
+            return new ResponseEntity<ProductoBase>(productoBase, HttpStatus.OK);
+        }
+
     }
 
     @DeleteMapping(path = {"/productobase/{productoBaseID}"})

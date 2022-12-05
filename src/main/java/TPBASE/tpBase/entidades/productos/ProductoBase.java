@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,12 +21,16 @@ public class ProductoBase extends EntidadPersistente {
 
     @Column(name = "nombre")
     private String nombre;
+
     @Column(name = "descripcion")
     private String descripcion;
+
     @Column(name = "precioBase")
     private Integer precioBase;
+
     @Column(name = "tiempoFabricacion")
     private Integer tiempoFabricacion;
+
     @ManyToMany
     private List<PosiblePersonalizacion> posiblePersonalizaciones;
 

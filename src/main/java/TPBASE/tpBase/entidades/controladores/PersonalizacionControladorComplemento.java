@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 
+import static org.springframework.http.HttpStatus.*;
+
 @RepositoryRestController
 public class PersonalizacionControladorComplemento {
 
@@ -28,16 +30,19 @@ public class PersonalizacionControladorComplemento {
 
     @PostMapping(path = "/personalizacion")
     public @ResponseBody ResponseEntity<Personalizacion> agregarPersonalizacion(@RequestBody PersonalizacionDTOsetter personalizacionDTOsetter){
-        PosiblePersonalizacion posiblePersonalizacion = posiblePersoRepo.findById(personalizacionDTOsetter.getPosiblePersonalizacionId()).get();
+        if (posiblePersoRepo.existsById(personalizacionDTOsetter.getPosiblePersonalizacionId())) {
+            PosiblePersonalizacion posiblePersonalizacion = posiblePersoRepo.findById(personalizacionDTOsetter.getPosiblePersonalizacionId()).get();
+            Personalizacion personalizacion = new Personalizacion();
+            personalizacion.setPosiblePersonalizacion(posiblePersonalizacion);
+            personalizacion.setNombre(personalizacionDTOsetter.getNombre());
+            personalizacion.setContenido(personalizacionDTOsetter.getContenido());
+            personalizacion.setPrecio(personalizacionDTOsetter.getPrecio());
 
-        Personalizacion personalizacion = new Personalizacion();
-        personalizacion.setPosiblePersonalizacion(posiblePersonalizacion);
-        personalizacion.setNombre(personalizacionDTOsetter.getNombre());
-        personalizacion.setContenido(personalizacionDTOsetter.getContenido());
-        personalizacion.setPrecio(personalizacionDTOsetter.getPrecio());
-
-        repo.save(personalizacion);
-        return new ResponseEntity<Personalizacion>(personalizacion, HttpStatus.OK);
+            repo.save(personalizacion);
+            return new ResponseEntity<Personalizacion>(personalizacion, OK);
+        }else{
+            return ResponseEntity.notFound().build();
+        }
     }
 
 
@@ -47,7 +52,7 @@ public class PersonalizacionControladorComplemento {
         if (repo.existsById(personalizacionID)){
             Personalizacion personalizacion = repo.findById(personalizacionID).get();
             personalizacion.setActivo(false);
-            return new ResponseEntity<Personalizacion>(personalizacion, HttpStatus.OK);
+            return new ResponseEntity<Personalizacion>(personalizacion, OK);
         }else{
             return ResponseEntity.notFound().build();
         }
