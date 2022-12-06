@@ -1,7 +1,4 @@
-- hacer los dto setters y getters
 
-- hacer validaciones (validacion con el tipo de dato, verificar que existe etc)
-
-- tirar bien los errores desde el back con los get post etc
-
-- poner que el preciototal se calcule solo al agregar una lista de personaliazciones, fijarse q si no se ponga nada tenga el valor del precio base
+- hacer la validcaicon con try y catch, poniendo los@null en todo
+- poner patch
+- hacer api de carrito

@@ -70,6 +70,7 @@ public class PublicacionControladorComplemento {
             publicacion.setProductoBase(productoBase);
             publicacion.setPersonalizaciones(personalizaciones);
             publicacion.setVendedor(vendedor);
+            publicacion.calcularPrecioTotal();
 
             repo.save(publicacion);
             return new ResponseEntity<Publicacion>(publicacion, HttpStatus.OK);

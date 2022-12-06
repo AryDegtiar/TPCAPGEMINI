@@ -11,9 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +29,7 @@ public class VendedorControladorComplemento {
     MetodoPagoRepositorio metodoPagoRepo;
 
     @PostMapping(path = "/vendedor")
-    public @ResponseBody ResponseEntity<Vendedor> agregarPosiblePersonalizacion(@RequestBody VendedorDTOsetter vendedorDTOsetter) {
+    public @ResponseBody ResponseEntity<?> agregarPosiblePersonalizacion(@RequestBody VendedorDTOsetter vendedorDTOsetter) {
         boolean notFoundMetodoPago = true;
         List<MetodoPago> metodosPagos = new ArrayList<>();
         for(Integer metodoPagoId : vendedorDTOsetter.getMetodosPagosId()){
@@ -40,16 +43,20 @@ public class VendedorControladorComplemento {
         }
 
         if (notFoundMetodoPago) {
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<>("No se encontró el método de pago", HttpStatus.BAD_REQUEST);
         }else{
-            Vendedor vendedor = new Vendedor();
-            vendedor.setMail(vendedorDTOsetter.getMail());
-            vendedor.setContrasenia(vendedorDTOsetter.getContrasenia());
-            vendedor.setNombreTienda(vendedorDTOsetter.getNombreTienda());
-            vendedor.setMetodoPagos(metodosPagos);
+            try {
+                Vendedor vendedor = new Vendedor();
+                vendedor.setMail(vendedorDTOsetter.getMail());
+                vendedor.setContrasenia(vendedorDTOsetter.getContrasenia());
+                vendedor.setNombreTienda(vendedorDTOsetter.getNombreTienda());
+                vendedor.setMetodoPagos(metodosPagos);
 
-            repo.save(vendedor);
-            return new ResponseEntity<Vendedor>(vendedor, HttpStatus.OK);
+                repo.save(vendedor);
+                return new ResponseEntity<Vendedor>(vendedor, HttpStatus.OK);
+            } catch (Exception e) {
+                return new ResponseEntity<>("Error, campos de vendedor invalidos", HttpStatus.BAD_REQUEST);
+            }
         }
     }
 
