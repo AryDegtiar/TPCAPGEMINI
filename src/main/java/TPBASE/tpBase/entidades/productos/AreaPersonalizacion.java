@@ -5,14 +5,16 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 
 @Getter @Setter
 @Entity
 @Table(name = "area_personalizacion")
 public class AreaPersonalizacion extends EntidadPersistente {
-
+    @NotNull
+    @NotBlank
     @Column(name = "area")
     public String area;
 

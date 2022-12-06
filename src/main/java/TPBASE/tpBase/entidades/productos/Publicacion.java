@@ -4,9 +4,11 @@ import TPBASE.tpBase.entidades.enums.EnumEstado;
 import TPBASE.tpBase.entidades.actores.Vendedor;
 import TPBASE.tpBase.entidades.superclases.EntidadPersistente;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,20 +16,26 @@ import java.util.List;
 @Entity
 @Table(name = "publicacion")
 public class Publicacion extends EntidadPersistente {
+    @NonNull
+    @Column(name = "estado")
     @Enumerated(EnumType.STRING)
     private EnumEstado estadoPublicacion;
 
+    @NonNull
     @ManyToOne
     @JoinColumn(name = "productoBase", referencedColumnName = "id")
     private ProductoBase productoBase;
 
+    @NonNull @NotEmpty
     @OneToMany
     //@JoinColumn(name = "publicacion", referencedColumnName = "id") //comento por que tira error
     private List<Personalizacion> personalizaciones; 
 
+    @NonNull
     @Column(name = "precioTotal")
     private Integer precioTotal;
 
+    @NonNull
     @ManyToOne
     @JoinColumn(name = "publicacion_x_vendedor")
     private Vendedor vendedor;

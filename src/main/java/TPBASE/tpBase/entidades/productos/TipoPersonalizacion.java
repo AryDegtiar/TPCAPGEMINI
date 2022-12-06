@@ -12,8 +12,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "tipo_personalizacion")
 public class TipoPersonalizacion extends EntidadPersistente {
-    @NotNull(message = "Tipo personalizacion invalida")
-    @NotBlank(message = "Tipo personalizacion invalida")
+    @NotNull @NotBlank
     @Column(name = "tipo")
     private String tipo;
 

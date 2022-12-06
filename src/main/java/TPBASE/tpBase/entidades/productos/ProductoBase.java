@@ -15,22 +15,28 @@ import java.util.List;
 @Entity
 @Table(name = "producto_base")
 public class ProductoBase extends EntidadPersistente {
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "categoria_id", referencedColumnName = "id")
     private Categoria categoria;
 
+    @NotNull @NotBlank
     @Column(name = "nombre")
     private String nombre;
 
+    @NotNull @NotBlank
     @Column(name = "descripcion")
     private String descripcion;
 
+    @NotNull
     @Column(name = "precioBase")
     private Integer precioBase;
 
+    @NotNull
     @Column(name = "tiempoFabricacion")
     private Integer tiempoFabricacion;
 
+    @NotNull @NotEmpty
     @ManyToMany
     private List<PosiblePersonalizacion> posiblePersonalizaciones;
 

@@ -9,6 +9,7 @@ import TPBASE.tpBase.entidades.productos.PosiblePersonalizacion;
 import TPBASE.tpBase.entidades.productos.TipoPersonalizacion;
 import TPBASE.tpBase.entidades.repositorios.PersonalizacionRepositorio;
 import TPBASE.tpBase.entidades.repositorios.PosiblePersonalizacionRepositorio;
+import TPBASE.tpBase.entidades.repositorios.TipoPersonalizacionRepositorio;
 import TPBASE.tpBase.entidades.repositorios.VendedorRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
@@ -27,21 +28,27 @@ public class PersonalizacionControladorComplemento {
     PersonalizacionRepositorio repo;
     @Autowired
     PosiblePersonalizacionRepositorio posiblePersoRepo;
+    @Autowired
+    private TipoPersonalizacionRepositorio tipoPersonalizacionRepositorio;
 
     @PostMapping(path = "/personalizacion")
-    public @ResponseBody ResponseEntity<Personalizacion> agregarPersonalizacion(@RequestBody PersonalizacionDTOsetter personalizacionDTOsetter){
-        if (posiblePersoRepo.existsById(personalizacionDTOsetter.getPosiblePersonalizacionId())) {
-            PosiblePersonalizacion posiblePersonalizacion = posiblePersoRepo.findById(personalizacionDTOsetter.getPosiblePersonalizacionId()).get();
-            Personalizacion personalizacion = new Personalizacion();
-            personalizacion.setPosiblePersonalizacion(posiblePersonalizacion);
-            personalizacion.setNombre(personalizacionDTOsetter.getNombre());
-            personalizacion.setContenido(personalizacionDTOsetter.getContenido());
-            personalizacion.setPrecio(personalizacionDTOsetter.getPrecio());
+    public @ResponseBody ResponseEntity<?> agregarPersonalizacion(@RequestBody PersonalizacionDTOsetter personalizacionDTOsetter) {
+        try {
+            if (posiblePersoRepo.existsById(personalizacionDTOsetter.getPosiblePersonalizacionId())) {
+                PosiblePersonalizacion posiblePersonalizacion = posiblePersoRepo.findById(personalizacionDTOsetter.getPosiblePersonalizacionId()).get();
+                Personalizacion personalizacion = new Personalizacion();
+                personalizacion.setPosiblePersonalizacion(posiblePersonalizacion);
+                personalizacion.setNombre(personalizacionDTOsetter.getNombre());
+                personalizacion.setContenido(personalizacionDTOsetter.getContenido());
+                personalizacion.setPrecio(personalizacionDTOsetter.getPrecio());
 
-            repo.save(personalizacion);
-            return new ResponseEntity<Personalizacion>(personalizacion, OK);
-        }else{
-            return ResponseEntity.notFound().build();
+                repo.save(personalizacion);
+                return new ResponseEntity<>(personalizacion, OK);
+            } else {
+                return new ResponseEntity<>("No existe la posible personalizacion", NOT_FOUND);
+            }
+        }catch (Exception e){
+            return new ResponseEntity<>("No se pudo crear la personalizacion, campos invalidos", INTERNAL_SERVER_ERROR);
         }
     }
 

@@ -1,4 +1,4 @@
 
-- hacer la validcaicon con try y catch, poniendo los@null en todo
+- validaciones hechas, revisar si se puede poner algo para cuando se repite el id de personalizacion en publiacacion y que salga con error id
 - poner patch
 - hacer api de carrito

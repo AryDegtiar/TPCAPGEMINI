@@ -33,48 +33,50 @@ public class PublicacionControladorComplemento {
     VendedorRepositorio vendedorRepo;
 
     @PostMapping(path = "/publicacion")
-    public @ResponseBody ResponseEntity<Publicacion> agregarPublicacion(@RequestBody PublicacionDTOsetter publicacionDTOsetter) {
-
-        boolean notFoundProductoBase = false;
-        ProductoBase productoBase = null;
-        if (productoBaseRepo.existsById(publicacionDTOsetter.getProductoBaseId())) {
-            productoBase = productoBaseRepo.findById(publicacionDTOsetter.getProductoBaseId()).get();
-        } else {
-            notFoundProductoBase = true;
-        }
-
-        boolean notFoundVendedor = false;
-        Vendedor vendedor = null;
-        if (vendedorRepo.existsById(publicacionDTOsetter.getVendedorId())) {
-            vendedor = vendedorRepo.findById(publicacionDTOsetter.getVendedorId()).get();
-        } else {
-            notFoundVendedor = true;
-        }
-
-        boolean notFoundPersonalizacion = false;
-        List<Personalizacion> personalizaciones = new ArrayList<>();
-        for (Integer personalizacionId : publicacionDTOsetter.getPersonalizacionesId()) {
-            if (personalizacionRepo.existsById(personalizacionId)) {
-                Personalizacion personalizacion = personalizacionRepo.findById(personalizacionId).get();
-                personalizaciones.add(personalizacion);
+    public @ResponseBody ResponseEntity<?> agregarPublicacion(@RequestBody PublicacionDTOsetter publicacionDTOsetter) {
+        try {
+            boolean notFoundProductoBase = false;
+            ProductoBase productoBase = null;
+            if (productoBaseRepo.existsById(publicacionDTOsetter.getProductoBaseId())) {
+                productoBase = productoBaseRepo.findById(publicacionDTOsetter.getProductoBaseId()).get();
             } else {
-                notFoundPersonalizacion = true;
+                notFoundProductoBase = true;
             }
-        }
 
-        if (notFoundProductoBase == true || notFoundVendedor == true || notFoundPersonalizacion == true) {
-            return ResponseEntity.notFound().build();
-        } else {
-            Publicacion publicacion = new Publicacion();
-            publicacion.setEstadoPublicacion(publicacionDTOsetter.getEstadoPublicacion());
-            publicacion.setProductoBase(productoBase);
-            publicacion.setPersonalizaciones(personalizaciones);
-            publicacion.setVendedor(vendedor);
-            publicacion.calcularPrecioTotal();
+            boolean notFoundVendedor = false;
+            Vendedor vendedor = null;
+            if (vendedorRepo.existsById(publicacionDTOsetter.getVendedorId())) {
+                vendedor = vendedorRepo.findById(publicacionDTOsetter.getVendedorId()).get();
+            } else {
+                notFoundVendedor = true;
+            }
 
-            repo.save(publicacion);
-            return new ResponseEntity<Publicacion>(publicacion, HttpStatus.OK);
+            boolean notFoundPersonalizacion = false;
+            List<Personalizacion> personalizaciones = new ArrayList<>();
+            for (Integer personalizacionId : publicacionDTOsetter.getPersonalizacionesId()) {
+                if (personalizacionRepo.existsById(personalizacionId)) {
+                    Personalizacion personalizacion = personalizacionRepo.findById(personalizacionId).get();
+                    personalizaciones.add(personalizacion);
+                } else {
+                    notFoundPersonalizacion = true;
+                }
+            }
 
+            if (notFoundProductoBase == true || notFoundVendedor == true || notFoundPersonalizacion == true) {
+                return new ResponseEntity<>("Error, ids invalidos",HttpStatus.BAD_REQUEST);
+            } else {
+                Publicacion publicacion = new Publicacion();
+                publicacion.setEstadoPublicacion(publicacionDTOsetter.getEstadoPublicacion());
+                publicacion.setProductoBase(productoBase);
+                publicacion.setPersonalizaciones(personalizaciones);
+                publicacion.setVendedor(vendedor);
+                publicacion.calcularPrecioTotal();
+
+                repo.save(publicacion);
+                return new ResponseEntity<Publicacion>(publicacion, HttpStatus.OK);
+            }
+        }catch (Exception e){
+            return new ResponseEntity<>("No se pudo cargar la publicacion, campos invalidos",HttpStatus.BAD_REQUEST);
         }
     }
 

@@ -30,40 +30,43 @@ public class ProductoBaseControladorComplemento {
     CategoriaRepositorio categoriaRepo;
 
     @PostMapping(path = "/productobase")
-    public @ResponseBody ResponseEntity<ProductoBase> agregarPosiblePersonalizacion(@RequestBody ProductoBaseDTOsetter productoBaseDTOsetter){
-        boolean notFoundCategoria = true;
-        Categoria categoria = null;
-        if ( categoriaRepo.existsById(productoBaseDTOsetter.getCategoriaId()) ) {
-            categoria = categoriaRepo.findById(productoBaseDTOsetter.getCategoriaId()).get();
-            notFoundCategoria = false;
-        }
-
-        boolean notFoundPersonalizacion = false;
-        List<PosiblePersonalizacion> posiblesPersonalizaciones = new ArrayList<>();
-        for(Integer posiblePersonalizacionId : productoBaseDTOsetter.getPosiblePersonalizacionesId()){
-            if (posiblePersoRepo.existsById(posiblePersonalizacionId)) {
-                PosiblePersonalizacion posiblePersonalizacion = posiblePersoRepo.findById(posiblePersonalizacionId).get();
-                posiblesPersonalizaciones.add(posiblePersonalizacion);
-            }else{
-                notFoundPersonalizacion = true;
+    public @ResponseBody ResponseEntity<?> agregarPosiblePersonalizacion(@RequestBody ProductoBaseDTOsetter productoBaseDTOsetter){
+        try {
+            boolean notFoundCategoria = true;
+            Categoria categoria = null;
+            if (categoriaRepo.existsById(productoBaseDTOsetter.getCategoriaId())) {
+                categoria = categoriaRepo.findById(productoBaseDTOsetter.getCategoriaId()).get();
+                notFoundCategoria = false;
             }
+
+            boolean notFoundPersonalizacion = false;
+            List<PosiblePersonalizacion> posiblesPersonalizaciones = new ArrayList<>();
+            for (Integer posiblePersonalizacionId : productoBaseDTOsetter.getPosiblePersonalizacionesId()) {
+                if (posiblePersoRepo.existsById(posiblePersonalizacionId)) {
+                    PosiblePersonalizacion posiblePersonalizacion = posiblePersoRepo.findById(posiblePersonalizacionId).get();
+                    posiblesPersonalizaciones.add(posiblePersonalizacion);
+                } else {
+                    notFoundPersonalizacion = true;
+                }
+            }
+
+            if (notFoundCategoria == true || notFoundPersonalizacion == true) {
+                return new ResponseEntity<>("No se pudo crear el producto base, categoria o posible personalizacion invalidos", HttpStatus.BAD_REQUEST);
+            } else {
+                ProductoBase productoBase = new ProductoBase();
+                productoBase.setCategoria(categoria);
+                productoBase.setNombre(productoBaseDTOsetter.getNombre());
+                productoBase.setDescripcion(productoBaseDTOsetter.getDescripcion());
+                productoBase.setPrecioBase(productoBaseDTOsetter.getPrecioBase());
+                productoBase.setTiempoFabricacion(productoBaseDTOsetter.getTiempoFabricacion());
+                productoBase.setPosiblePersonalizaciones(posiblesPersonalizaciones);
+
+                repo.save(productoBase);
+                return new ResponseEntity<ProductoBase>(productoBase, HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>("No se pudo crear el producto base, campos invalidos", HttpStatus.BAD_REQUEST);
         }
-
-        if (notFoundCategoria == true || notFoundPersonalizacion == true){
-            return ResponseEntity.notFound().build();
-        }else{
-            ProductoBase productoBase = new ProductoBase();
-            productoBase.setCategoria(categoria);
-            productoBase.setNombre(productoBaseDTOsetter.getNombre());
-            productoBase.setDescripcion(productoBaseDTOsetter.getDescripcion());
-            productoBase.setPrecioBase(productoBaseDTOsetter.getPrecioBase());
-            productoBase.setTiempoFabricacion(productoBaseDTOsetter.getTiempoFabricacion());
-            productoBase.setPosiblePersonalizaciones(posiblesPersonalizaciones);
-
-            repo.save(productoBase);
-            return new ResponseEntity<ProductoBase>(productoBase, HttpStatus.OK);
-        }
-
     }
 
     @DeleteMapping(path = {"/productobase/{productoBaseID}"})

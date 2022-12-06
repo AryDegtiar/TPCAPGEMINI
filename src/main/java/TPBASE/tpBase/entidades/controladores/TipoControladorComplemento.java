@@ -26,7 +26,7 @@ public class TipoControladorComplemento {
     TipoPersonalizacionRepositorio repo;
 
     @PostMapping(path = "/tipopersonalizacion")
-    public @ResponseBody ResponseEntity<?> agregarTipoPersonalizacion(@RequestBody @Valid TipoPersonalizacion tipoPersonalizacion) {
+    public @ResponseBody ResponseEntity<?> agregarTipoPersonalizacion(@RequestBody TipoPersonalizacion tipoPersonalizacion) {
        try {
             TipoPersonalizacion tipoPersonalizacion1 = repo.save(tipoPersonalizacion);
             return new ResponseEntity<>(tipoPersonalizacion1,HttpStatus.CREATED);

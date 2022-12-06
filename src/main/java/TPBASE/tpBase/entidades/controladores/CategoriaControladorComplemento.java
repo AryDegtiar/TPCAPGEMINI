@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 
@@ -17,6 +15,16 @@ public class CategoriaControladorComplemento {
 
     @Autowired
     CategoriaRepositorio repo;
+
+    @PostMapping(path = "/categoria")
+    public @ResponseBody ResponseEntity<?> agregarCategoria(@RequestBody Categoria categoria){
+        try {
+            Categoria categoria1 = repo.save(categoria);
+            return new ResponseEntity<>(categoria1, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>("No se pudo crear la categoria, campos invalidos", HttpStatus.BAD_REQUEST);
+        }
+    }
 
     @DeleteMapping(path = {"/categoria/{categoriaID}"})
     @Transactional

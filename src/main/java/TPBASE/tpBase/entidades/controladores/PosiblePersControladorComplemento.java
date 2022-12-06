@@ -27,19 +27,23 @@ public class PosiblePersControladorComplemento {
     TipoPersonalizacionRepositorio tipoRepo;
 
     @PostMapping(path = "/posiblepersonalizacion")
-    public @ResponseBody ResponseEntity<PosiblePersonalizacion> agregarPosiblePersonalizacion(@RequestBody PosiblePersonalizacionDTOsetter posiblePersonalizacionDTOsetter){
-        if (areaRepo.existsById(posiblePersonalizacionDTOsetter.getTipoPersonalizacionId()) && tipoRepo.existsById(posiblePersonalizacionDTOsetter.getTipoPersonalizacionId())) {
-            AreaPersonalizacion area = areaRepo.findById(posiblePersonalizacionDTOsetter.getAreaPersonalizacionId()).get();
-            TipoPersonalizacion tipo = tipoRepo.findById(posiblePersonalizacionDTOsetter.getTipoPersonalizacionId()).get();
+    public @ResponseBody ResponseEntity<?> agregarPosiblePersonalizacion(@RequestBody PosiblePersonalizacionDTOsetter posiblePersonalizacionDTOsetter){
+        try {
+            if (areaRepo.existsById(posiblePersonalizacionDTOsetter.getAreaPersonalizacionId()) && tipoRepo.existsById(posiblePersonalizacionDTOsetter.getTipoPersonalizacionId())) {
+                AreaPersonalizacion area = areaRepo.findById(posiblePersonalizacionDTOsetter.getAreaPersonalizacionId()).get();
+                TipoPersonalizacion tipo = tipoRepo.findById(posiblePersonalizacionDTOsetter.getTipoPersonalizacionId()).get();
 
-            PosiblePersonalizacion posiblePersonalizacion = new PosiblePersonalizacion();
-            posiblePersonalizacion.setAreaPersonalizacion(area);
-            posiblePersonalizacion.setTipoPersonalizacion(tipo);
+                PosiblePersonalizacion posiblePersonalizacion = new PosiblePersonalizacion();
+                posiblePersonalizacion.setAreaPersonalizacion(area);
+                posiblePersonalizacion.setTipoPersonalizacion(tipo);
 
-            repo.save(posiblePersonalizacion);
-            return new ResponseEntity<PosiblePersonalizacion>(posiblePersonalizacion, HttpStatus.OK);
-        }else{
-            return ResponseEntity.notFound().build();
+                repo.save(posiblePersonalizacion);
+                return new ResponseEntity<>(posiblePersonalizacion, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("No se pudo crear la posible personalizacion, area o tipo inexistentes", HttpStatus.BAD_REQUEST);
+            }
+        }catch (Exception e){
+            return new ResponseEntity<>("No se pudo crear la posible personalizacion, campos invalidos", HttpStatus.BAD_REQUEST);
         }
     }
 
