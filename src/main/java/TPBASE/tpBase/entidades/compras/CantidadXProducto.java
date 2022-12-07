@@ -13,7 +13,7 @@ import javax.persistence.*;
 public class CantidadXProducto {
     @Id
     @GeneratedValue
-    private Integer cantXProdID;
+    private Integer id;
 
     @Column(name = "cantidad")
     private Integer cantidad;
