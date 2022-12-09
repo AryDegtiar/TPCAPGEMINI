@@ -1,4 +1,4 @@
 
 - validaciones hechas, revisar si se puede poner algo para cuando se repite el id de personalizacion en publiacacion y que salga con error id
-- poner patch
+- poner patch (modificar los transaccional por save para ver si eso saca el error 500)
 - hacer api de carrito

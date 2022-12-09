@@ -2,6 +2,9 @@ package TPBASE.tpBase.entidades.controladores;
 
 import TPBASE.tpBase.entidades.actores.Vendedor;
 import TPBASE.tpBase.entidades.dto.setter.PublicacionDTOsetter;
+import TPBASE.tpBase.entidades.dto.setterSoloID.PersonalizacionesDTOsetterID;
+import TPBASE.tpBase.entidades.dto.setterSoloID.ProductoBaseDTOsetterID;
+import TPBASE.tpBase.entidades.dto.setterSoloID.VendedorDTOsetterID;
 import TPBASE.tpBase.entidades.productos.Personalizacion;
 import TPBASE.tpBase.entidades.productos.PosiblePersonalizacion;
 import TPBASE.tpBase.entidades.productos.ProductoBase;
@@ -89,6 +92,76 @@ public class PublicacionControladorComplemento {
             return new ResponseEntity<Publicacion>(posiblePersonalizacion, HttpStatus.OK);
         }else{
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    //PATCH
+    @Transactional
+    @PatchMapping(path = {"/publicacion/{id}/productoBase"})
+    public @ResponseBody ResponseEntity<?> modificarProductoBase(@PathVariable("id") Integer id, @RequestBody ProductoBaseDTOsetterID productoBaseDTOsetterID){
+        try {
+            if (repo.existsById(id)) {
+                Publicacion publicacion = repo.findById(id).get();
+                if (productoBaseRepo.existsById(productoBaseDTOsetterID.getProductoBaseId())) {
+                    ProductoBase productoBase = productoBaseRepo.findById(productoBaseDTOsetterID.getProductoBaseId()).get();
+                    publicacion.setProductoBase(productoBase);
+                    publicacion.calcularPrecioTotal();
+                    return new ResponseEntity<Publicacion>(publicacion, HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<>("No se encontro el producto base", HttpStatus.BAD_REQUEST);
+                }
+            } else {
+                return new ResponseEntity<>("No se encontro la publicacion", HttpStatus.BAD_REQUEST);
+            }
+        }catch (Exception e){
+            return new ResponseEntity<>("No se pudo modificar el producto base, campos invalidos",HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Transactional
+    @PatchMapping(path = {"/publicacion/{id}/vendedor"})
+    public @ResponseBody ResponseEntity<?> modificarVendedor(@PathVariable("id") Integer id, @RequestBody VendedorDTOsetterID vendedorDTOsetterID){
+        try {
+            if (repo.existsById(id)) {
+                Publicacion publicacion = repo.findById(id).get();
+                if (vendedorRepo.existsById(vendedorDTOsetterID.getVendedorId())) {
+                    Vendedor vendedor = vendedorRepo.findById(vendedorDTOsetterID.getVendedorId()).get();
+                    publicacion.setVendedor(vendedor);
+                    return new ResponseEntity<Publicacion>(publicacion, HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<>("No se encontro el vendedor", HttpStatus.BAD_REQUEST);
+                }
+            } else {
+                return new ResponseEntity<>("No se encontro la publicacion", HttpStatus.BAD_REQUEST);
+            }
+        }catch (Exception e){
+            return new ResponseEntity<>("No se pudo modificar el vendedor, campos invalidos",HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Transactional
+    @PatchMapping(path = {"/publicacion/{id}/personalizaciones"})
+    public @ResponseBody ResponseEntity<?> modificarPersonalizaciones(@PathVariable("id") Integer id, @RequestBody PersonalizacionesDTOsetterID personalizacionesDTOsetterID){
+        try {
+            if (repo.existsById(id)) {
+                Publicacion publicacion = repo.findById(id).get();
+                List<Personalizacion> personalizaciones = new ArrayList<>();
+                for (Integer personalizacionId : personalizacionesDTOsetterID.getPersonalizacionesId()) {
+                    if (personalizacionRepo.existsById(personalizacionId)) {
+                        Personalizacion personalizacion = personalizacionRepo.findById(personalizacionId).get();
+                        personalizaciones.add(personalizacion);
+                    } else {
+                        return new ResponseEntity<>("No se encontro la personalizacion", HttpStatus.BAD_REQUEST);
+                    }
+                }
+                publicacion.setPersonalizaciones(personalizaciones);
+                publicacion.calcularPrecioTotal();
+                return new ResponseEntity<Publicacion>(publicacion, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("No se encontro la publicacion", HttpStatus.BAD_REQUEST);
+            }
+        }catch (Exception e){
+            return new ResponseEntity<>("No se pudo modificar las personalizaciones, campos invalidos",HttpStatus.BAD_REQUEST);
         }
     }
 
