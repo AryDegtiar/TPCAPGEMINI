@@ -1,6 +1,8 @@
 package TPBASE.tpBase.entidades.controladores;
 
 import TPBASE.tpBase.entidades.dto.setter.PosiblePersonalizacionDTOsetter;
+import TPBASE.tpBase.entidades.dto.setterSoloID.AreaPersonalizacionDTOsetterID;
+import TPBASE.tpBase.entidades.dto.setterSoloID.TipoPersonalizacionDTOsetterID;
 import TPBASE.tpBase.entidades.productos.AreaPersonalizacion;
 import TPBASE.tpBase.entidades.productos.PosiblePersonalizacion;
 import TPBASE.tpBase.entidades.productos.TipoPersonalizacion;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -56,6 +59,50 @@ public class PosiblePersControladorComplemento {
             return new ResponseEntity<PosiblePersonalizacion>(posiblePersonalizacion, HttpStatus.OK);
         }else{
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    //PATCH
+
+    @PatchMapping("/posiblepersonalizacion/{posiblePersoID}/areaPersonalizacion")
+    public @ResponseBody ResponseEntity<?> actualizarArea(@PathVariable("posiblePersoID") Integer posiblePersoID, @RequestBody AreaPersonalizacionDTOsetterID areaPersonalizacionDTOsetterID, BindingResult bindingResult){
+        try{
+            if (repo.existsById(posiblePersoID)){
+                if (areaRepo.existsById(areaPersonalizacionDTOsetterID.getAreaPersonalizacionId())) {
+                    PosiblePersonalizacion posiblePersonalizacion = repo.findById(posiblePersoID).get();
+                    AreaPersonalizacion areaPersonalizacion = areaRepo.findById(areaPersonalizacionDTOsetterID.getAreaPersonalizacionId()).get();
+                    posiblePersonalizacion.setAreaPersonalizacion(areaPersonalizacion);
+                    posiblePersonalizacion = repo.save(posiblePersonalizacion);
+                    return new ResponseEntity<>(posiblePersonalizacion, HttpStatus.OK);
+                }else{
+                    return new ResponseEntity<>("No se pudo modificar la posible personalizacion, area personalizacion inexistente", HttpStatus.BAD_REQUEST);
+                }
+            }else{
+                return new ResponseEntity<>("No se pudo modificar la posible personalizacion, area personalizacion inexistentes", HttpStatus.BAD_REQUEST);
+            }
+        }catch (Exception e){
+            return new ResponseEntity<>("No se pudo modificar la posible personalizacion, campos invalidos", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PatchMapping("/posiblepersonalizacion/{posiblePersoID}/tipoPersonalizacion")
+    public @ResponseBody ResponseEntity<?> modificarArea(@PathVariable("posiblePersoID") Integer posiblePersoID, @RequestBody TipoPersonalizacionDTOsetterID tipoPersonalizacionDTOsetterID){
+        try{
+            if (repo.existsById(posiblePersoID)){
+                if (tipoRepo.existsById(tipoPersonalizacionDTOsetterID.getTipoPersonalizacionId())) {
+                    PosiblePersonalizacion posiblePersonalizacion = repo.findById(posiblePersoID).get();
+                    TipoPersonalizacion tipoPersonalizacion = tipoRepo.findById(tipoPersonalizacionDTOsetterID.getTipoPersonalizacionId()).get();
+                    posiblePersonalizacion.setTipoPersonalizacion(tipoPersonalizacion);
+                    posiblePersonalizacion = repo.save(posiblePersonalizacion);
+                    return new ResponseEntity<>(posiblePersonalizacion, HttpStatus.OK);
+                }else{
+                    return new ResponseEntity<>("No se pudo modificar la posible personalizacion, tipo personalizacion inexistente", HttpStatus.BAD_REQUEST);
+                }
+            }else{
+                return new ResponseEntity<>("No se pudo modificar la posible personalizacion, tipo personalizacion inexistentes", HttpStatus.BAD_REQUEST);
+            }
+        }catch (Exception e){
+            return new ResponseEntity<>("No se pudo modificar la posible personalizacion, campos invalidos", HttpStatus.BAD_REQUEST);
         }
     }
 

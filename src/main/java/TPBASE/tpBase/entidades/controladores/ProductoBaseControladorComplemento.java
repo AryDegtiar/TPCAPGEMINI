@@ -2,8 +2,7 @@ package TPBASE.tpBase.entidades.controladores;
 
 import TPBASE.tpBase.entidades.dto.setterSoloID.CategoriaDTOsetterID;
 import TPBASE.tpBase.entidades.dto.setter.ProductoBaseDTOsetter;
-import TPBASE.tpBase.entidades.dto.setter.PosiblePersonalizacionDTOsetter;
-import TPBASE.tpBase.entidades.dto.setterSoloID.PosiblePersonalizacionDTOsetterID;
+import TPBASE.tpBase.entidades.dto.setterSoloID.PosiblesPersonalizacionesDTOsetterID;
 import TPBASE.tpBase.entidades.productos.Categoria;
 import TPBASE.tpBase.entidades.productos.PosiblePersonalizacion;
 import TPBASE.tpBase.entidades.productos.ProductoBase;
@@ -84,7 +83,6 @@ public class ProductoBaseControladorComplemento {
     }
 
     // PATCHS
-    @Transactional
     @PatchMapping(path = "/productobase/{id}/categoria")
     public ResponseEntity<?> modificarCategoria(@PathVariable Integer id, @RequestBody CategoriaDTOsetterID categoriaId){
         try {
@@ -93,6 +91,7 @@ public class ProductoBaseControladorComplemento {
                 if ( categoriaRepo.existsById(categoriaId.getCategoriaId()) ) {
                     Categoria categoria = categoriaRepo.findById(categoriaId.getCategoriaId()).get();
                     productoBase.setCategoria(categoria);
+                    productoBase = repo.save(productoBase);
                     return new ResponseEntity<ProductoBase>(productoBase, HttpStatus.OK);
                 } else {
                     return new ResponseEntity<>("No se pudo modificar la categoria, categoria invalida", HttpStatus.BAD_REQUEST);
@@ -105,9 +104,8 @@ public class ProductoBaseControladorComplemento {
         }
     }
 
-    @Transactional
     @PatchMapping(path = "/productobase/{id}/posiblePersonalizaciones")
-    public ResponseEntity<?> modificarPosiblePersonalizacion(@PathVariable Integer id, @RequestBody PosiblePersonalizacionDTOsetterID posiblePersonalizacionesId){
+    public ResponseEntity<?> modificarPosiblePersonalizacion(@PathVariable Integer id, @RequestBody PosiblesPersonalizacionesDTOsetterID posiblePersonalizacionesId){
         try {
             if (repo.existsById(id)) {
                 ProductoBase productoBase = repo.findById(id).get();
@@ -121,6 +119,7 @@ public class ProductoBaseControladorComplemento {
                     }
                 }
                 productoBase.setPosiblePersonalizaciones(posiblesPersonalizaciones);
+                productoBase = repo.save(productoBase);
                 return new ResponseEntity<ProductoBase>(productoBase, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>("No se pudo modificar las posibles personalizaciones, producto base invalido", HttpStatus.BAD_REQUEST);

@@ -96,7 +96,6 @@ public class PublicacionControladorComplemento {
     }
 
     //PATCH
-    @Transactional
     @PatchMapping(path = {"/publicacion/{id}/productoBase"})
     public @ResponseBody ResponseEntity<?> modificarProductoBase(@PathVariable("id") Integer id, @RequestBody ProductoBaseDTOsetterID productoBaseDTOsetterID){
         try {
@@ -106,6 +105,7 @@ public class PublicacionControladorComplemento {
                     ProductoBase productoBase = productoBaseRepo.findById(productoBaseDTOsetterID.getProductoBaseId()).get();
                     publicacion.setProductoBase(productoBase);
                     publicacion.calcularPrecioTotal();
+                    publicacion = repo.save(publicacion);
                     return new ResponseEntity<Publicacion>(publicacion, HttpStatus.OK);
                 } else {
                     return new ResponseEntity<>("No se encontro el producto base", HttpStatus.BAD_REQUEST);
@@ -118,7 +118,6 @@ public class PublicacionControladorComplemento {
         }
     }
 
-    @Transactional
     @PatchMapping(path = {"/publicacion/{id}/vendedor"})
     public @ResponseBody ResponseEntity<?> modificarVendedor(@PathVariable("id") Integer id, @RequestBody VendedorDTOsetterID vendedorDTOsetterID){
         try {
@@ -127,6 +126,7 @@ public class PublicacionControladorComplemento {
                 if (vendedorRepo.existsById(vendedorDTOsetterID.getVendedorId())) {
                     Vendedor vendedor = vendedorRepo.findById(vendedorDTOsetterID.getVendedorId()).get();
                     publicacion.setVendedor(vendedor);
+                    publicacion = repo.save(publicacion);
                     return new ResponseEntity<Publicacion>(publicacion, HttpStatus.OK);
                 } else {
                     return new ResponseEntity<>("No se encontro el vendedor", HttpStatus.BAD_REQUEST);
@@ -139,7 +139,6 @@ public class PublicacionControladorComplemento {
         }
     }
 
-    @Transactional
     @PatchMapping(path = {"/publicacion/{id}/personalizaciones"})
     public @ResponseBody ResponseEntity<?> modificarPersonalizaciones(@PathVariable("id") Integer id, @RequestBody PersonalizacionesDTOsetterID personalizacionesDTOsetterID){
         try {
@@ -156,6 +155,7 @@ public class PublicacionControladorComplemento {
                 }
                 publicacion.setPersonalizaciones(personalizaciones);
                 publicacion.calcularPrecioTotal();
+                publicacion = repo.save(publicacion);
                 return new ResponseEntity<Publicacion>(publicacion, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>("No se encontro la publicacion", HttpStatus.BAD_REQUEST);

@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.NonNull;
 
 @Getter
-public class ProductoBaseDTOsetterID {
-
-    private Integer productoBaseId;
+public class AreaPersonalizacionDTOsetterID {
+    private Integer areaPersonalizacionId;
 }
