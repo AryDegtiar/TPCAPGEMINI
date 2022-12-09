@@ -1,22 +1,18 @@
 package TPBASE.tpBase.entidades.controladores;
 
 import TPBASE.tpBase.entidades.actores.Vendedor;
+import TPBASE.tpBase.entidades.dto.setterSoloID.MetodoPagosDTOsetterID;
 import TPBASE.tpBase.entidades.metodosPagos.MetodoPago;
 import TPBASE.tpBase.entidades.dto.setter.VendedorDTOsetter;
-import TPBASE.tpBase.entidades.productos.PosiblePersonalizacion;
-import TPBASE.tpBase.entidades.productos.TipoPersonalizacion;
 import TPBASE.tpBase.entidades.repositorios.MetodoPagoRepositorio;
 import TPBASE.tpBase.entidades.repositorios.VendedorRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +38,7 @@ public class VendedorControladorComplemento {
                     notFoundMetodoPago = true;
                 }
             }
+<<<<<<< HEAD
 
             if (notFoundMetodoPago) {
                 return new ResponseEntity<>("No se encontró el método de pago", HttpStatus.BAD_REQUEST);
@@ -54,6 +51,20 @@ public class VendedorControladorComplemento {
 
                 repo.save(vendedor);
                 return new ResponseEntity<Vendedor>(vendedor, HttpStatus.OK);
+=======
+
+            if (notFoundMetodoPago) {
+                return new ResponseEntity<>("No se encontró el método de pago", HttpStatus.BAD_REQUEST);
+            }else{
+                    Vendedor vendedor = new Vendedor();
+                    vendedor.setMail(vendedorDTOsetter.getMail());
+                    vendedor.setContrasenia(vendedorDTOsetter.getContrasenia());
+                    vendedor.setNombreTienda(vendedorDTOsetter.getNombreTienda());
+                    vendedor.setMetodoPagos(metodosPagos);
+
+                    repo.save(vendedor);
+                    return new ResponseEntity<Vendedor>(vendedor, HttpStatus.OK);
+>>>>>>> test-api-dto
             }
         } catch (Exception e) {
             return new ResponseEntity<>("Error, campos de vendedor invalidos", HttpStatus.BAD_REQUEST);
@@ -69,6 +80,32 @@ public class VendedorControladorComplemento {
             return new ResponseEntity<Vendedor>(posiblePersonalizacion, HttpStatus.OK);
         }else{
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    //Patch
+    @PatchMapping(path = {"/vendedor/{id}/metodoPagos"})
+    public @ResponseBody ResponseEntity<?> modificarMetodosPagos(@PathVariable("id") Integer id, @RequestBody MetodoPagosDTOsetterID metodosPagosDTOsetterID){
+        try {
+            if (repo.existsById(id)){
+                Vendedor vendedor = repo.findById(id).get();
+                List<MetodoPago> metodosPagos = new ArrayList<>();
+                for(Integer metodoPagoId : metodosPagosDTOsetterID.getMetodosPagosId()){
+                    if (metodoPagoRepo.existsById(metodoPagoId)) {
+                        MetodoPago metodoPago = metodoPagoRepo.findById(metodoPagoId).get();
+                        metodosPagos.add(metodoPago);
+                    }else{
+                        return new ResponseEntity<>("No se encontró el método de pago", HttpStatus.BAD_REQUEST);
+                    }
+                }
+                vendedor.setMetodoPagos(metodosPagos);
+                vendedor = repo.save(vendedor);
+                return new ResponseEntity<Vendedor>(vendedor, HttpStatus.OK);
+            }else{
+                return new ResponseEntity<>("No se encontró el vendedor", HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error, campos de vendedor invalidos", HttpStatus.BAD_REQUEST);
         }
     }
 

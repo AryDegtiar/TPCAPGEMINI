@@ -1,7 +1,8 @@
 package TPBASE.tpBase.entidades.controladores;
 
+import TPBASE.tpBase.entidades.dto.setterSoloID.CategoriaDTOsetterID;
 import TPBASE.tpBase.entidades.dto.setter.ProductoBaseDTOsetter;
-import TPBASE.tpBase.entidades.metodosPagos.MetodoPago;
+import TPBASE.tpBase.entidades.dto.setterSoloID.PosiblesPersonalizacionesDTOsetterID;
 import TPBASE.tpBase.entidades.productos.Categoria;
 import TPBASE.tpBase.entidades.productos.PosiblePersonalizacion;
 import TPBASE.tpBase.entidades.productos.ProductoBase;
@@ -80,5 +81,53 @@ public class ProductoBaseControladorComplemento {
             return ResponseEntity.notFound().build();
         }
     }
+
+    // PATCHS
+    @PatchMapping(path = "/productobase/{id}/categoria")
+    public ResponseEntity<?> modificarCategoria(@PathVariable Integer id, @RequestBody CategoriaDTOsetterID categoriaId){
+        try {
+            if (repo.existsById(id)) {
+                ProductoBase productoBase = repo.findById(id).get();
+                if ( categoriaRepo.existsById(categoriaId.getCategoriaId()) ) {
+                    Categoria categoria = categoriaRepo.findById(categoriaId.getCategoriaId()).get();
+                    productoBase.setCategoria(categoria);
+                    productoBase = repo.save(productoBase);
+                    return new ResponseEntity<ProductoBase>(productoBase, HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<>("No se pudo modificar la categoria, categoria invalida", HttpStatus.BAD_REQUEST);
+                }
+            } else {
+                return new ResponseEntity<>("No se pudo modificar la categoria, producto base invalido", HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>("No se pudo modificar la categoria, campos invalidos", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PatchMapping(path = "/productobase/{id}/posiblePersonalizaciones")
+    public ResponseEntity<?> modificarPosiblePersonalizacion(@PathVariable Integer id, @RequestBody PosiblesPersonalizacionesDTOsetterID posiblePersonalizacionesId){
+        try {
+            if (repo.existsById(id)) {
+                ProductoBase productoBase = repo.findById(id).get();
+                List<PosiblePersonalizacion> posiblesPersonalizaciones = new ArrayList<>();
+                for (Integer posiblePersonalizacionId : posiblePersonalizacionesId.getPosiblePersonalizacionesId()) {
+                    if (posiblePersoRepo.existsById(posiblePersonalizacionId)) {
+                        PosiblePersonalizacion posiblePersonalizacion = posiblePersoRepo.findById(posiblePersonalizacionId).get();
+                        posiblesPersonalizaciones.add(posiblePersonalizacion);
+                    } else {
+                        return new ResponseEntity<>("No se pudo modificar las posibles personalizaciones, posible personalizacion invalida", HttpStatus.BAD_REQUEST);
+                    }
+                }
+                productoBase.setPosiblePersonalizaciones(posiblesPersonalizaciones);
+                productoBase = repo.save(productoBase);
+                return new ResponseEntity<ProductoBase>(productoBase, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("No se pudo modificar las posibles personalizaciones, producto base invalido", HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>("No se pudo modificar las posibles personalizaciones, campos invalidos", HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
 }

@@ -50,6 +50,7 @@ public class TpBaseApplication {
 			}
 
 			Categoria catRemeras = categoriaRepositorio.save(new Categoria("REMERAS"));
+			Categoria catPantalones = categoriaRepositorio.save(new Categoria("PANTALONES"));
 
 			TipoPersonalizacion tipoImg = tipoPersonalizacionRepositorio.save(new TipoPersonalizacion("IMAGEN"));
 			TipoPersonalizacion tipoTxt = tipoPersonalizacionRepositorio.save(new TipoPersonalizacion("TEXTO"));

@@ -3,6 +3,7 @@ package TPBASE.tpBase.entidades.controladores;
 import TPBASE.tpBase.entidades.actores.Vendedor;
 import TPBASE.tpBase.entidades.dto.setter.PersonalizacionDTOsetter;
 import TPBASE.tpBase.entidades.dto.setter.PosiblePersonalizacionDTOsetter;
+import TPBASE.tpBase.entidades.dto.setterSoloID.PosiblePersonalizacionDTOsetterID;
 import TPBASE.tpBase.entidades.productos.AreaPersonalizacion;
 import TPBASE.tpBase.entidades.productos.Personalizacion;
 import TPBASE.tpBase.entidades.productos.PosiblePersonalizacion;
@@ -52,7 +53,6 @@ public class PersonalizacionControladorComplemento {
         }
     }
 
-
     @DeleteMapping(path = {"/personalizacion/{personalizacionID}"})
     @Transactional
     public @ResponseBody ResponseEntity<Personalizacion> darDeBajaArea(@PathVariable("personalizacionID") Integer personalizacionID){
@@ -62,6 +62,28 @@ public class PersonalizacionControladorComplemento {
             return new ResponseEntity<Personalizacion>(personalizacion, OK);
         }else{
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    //PATCH
+    @PatchMapping(path = {"/personalizacion/{id}/posiblePersonalizacion"})
+    public @ResponseBody ResponseEntity<?> cambiarPosiblePersonalizacion(@PathVariable("id") Integer id, @RequestBody PosiblePersonalizacionDTOsetterID posiblePersonalizacionDTOsetterID){
+        try {
+            if (repo.existsById(id)) {
+                Personalizacion personalizacion = repo.findById(id).get();
+                if (posiblePersoRepo.existsById(posiblePersonalizacionDTOsetterID.getPosiblePersonalizacionId())) {
+                    PosiblePersonalizacion posiblePersonalizacion = posiblePersoRepo.findById(posiblePersonalizacionDTOsetterID.getPosiblePersonalizacionId()).get();
+                    personalizacion.setPosiblePersonalizacion(posiblePersonalizacion);
+                    personalizacion = repo.save(personalizacion);
+                    return new ResponseEntity<>(personalizacion, OK);
+                } else {
+                    return new ResponseEntity<>("No existe la posible personalizacion", NOT_FOUND);
+                }
+            } else {
+                return new ResponseEntity<>("No existe la personalizacion", NOT_FOUND);
+            }
+        }catch (Exception e){
+            return new ResponseEntity<>("No se pudo cambiar la personalizacion, campos invalidos", INTERNAL_SERVER_ERROR);
         }
     }
 
