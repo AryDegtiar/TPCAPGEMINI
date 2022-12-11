@@ -22,7 +22,12 @@ public class CantidadXProducto {
     @JoinColumn(name = "publicacion_xcantidad")
     private Publicacion publicacion;
 
-    public CantidadXProducto(){
+    public CantidadXProducto(Publicacion publicacion, Integer integer) {
+        this.publicacion = publicacion;
+        this.cantidad = integer;
+    }
+
+    public CantidadXProducto() {
 
     }
 }

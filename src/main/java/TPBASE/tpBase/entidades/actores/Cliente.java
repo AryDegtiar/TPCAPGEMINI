@@ -22,4 +22,8 @@ public class Cliente extends EntidadPersistente {
     @OneToMany
     @JoinColumn(name = "clienteID", referencedColumnName = "id")
     private List<CompraRealizada> compraRealizadas;
+
+    public void agregarCompra(CompraRealizada compraRealizada) {
+        this.compraRealizadas.add(compraRealizada);
+    }
 }

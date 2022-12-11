@@ -38,6 +38,10 @@ public class Vendedor extends EntidadPersistente {
     @ManyToMany //funca
     private List<MetodoPago> metodoPagos;
 
+    public boolean contieneMetodoPago(MetodoPago metodoPago) {
+        return metodoPagos.contains(metodoPago);
+    }
+
     public Vendedor(String mail, String contrasenia, String nombreTienda) {
         this();
         this.mail = mail;
