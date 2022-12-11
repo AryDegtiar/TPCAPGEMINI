@@ -6,6 +6,6 @@ import java.util.List;
 
 @Getter
 public class PublicacionesDTOsetterID {
-    private List<Integer> publicacionesID;
-    private Integer metodoPagoID;
+    private List<Integer> publicacionesId;
+    private Integer metodoPagoId;
 }

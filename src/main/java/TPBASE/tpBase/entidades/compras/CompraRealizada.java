@@ -1,13 +1,16 @@
 package TPBASE.tpBase.entidades.compras;
 
+import TPBASE.tpBase.entidades.actores.Cliente;
 import TPBASE.tpBase.entidades.enums.EnumMetodoPago;
 import TPBASE.tpBase.entidades.actores.Vendedor;
 import TPBASE.tpBase.entidades.metodosPagos.MetodoPago;
 import TPBASE.tpBase.entidades.productos.Publicacion;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -25,6 +28,7 @@ public class CompraRealizada {
     @GeneratedValue
     private Integer comprareali_id;
 
+    @NotNull
     @Column(name = "fecha", columnDefinition = "DATE")
     private LocalDate fecha;
 
@@ -42,72 +46,31 @@ public class CompraRealizada {
     @Column(name = "precioTotal")
     private BigInteger precioTotal;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private EnumMetodoPago metodoPago;
 
-    @ManyToOne
+    @NotNull
     @JoinColumn(name = "vendedor_CompraRealizada")
     private static Vendedor vendedor;
 
-    //Esto deveria funcionar opcion 1
-    /*
-    public static CompraRealizada agregarCompra(List<Publicacion> publicaciones, MetodoPago metodoPago) {
-        CompraRealizada compraRealizada = new CompraRealizada();
 
-        if (vendedor.contieneMetodoPago(metodoPago)) {
-            compraRealizada.setMetodoPago(metodoPago.getMetodoPago());
-        } else {
-            throw new RuntimeException("El vendedor no acepta ese metodo de pago");
-        }
-
-        compraRealizada.setPublicaciones(publicaciones);
-        compraRealizada.vendedor = publicaciones.get(0).getVendedor();
-        compraRealizada.setFecha(LocalDate.now());
-
-        compraRealizada.setPrecioTotal(compraRealizada.calcularPrecioTotal(publicaciones));
-
-        return compraRealizada;
-    }
-     */
-
-    //Esto deveria funcionar opcion 2
-    public static CompraRealizada agregarCompra(List<Publicacion> publicaciones, MetodoPago metodoPago) {
-        CompraRealizada compraRealizada = new CompraRealizada();
-
-        if (vendedor.contieneMetodoPago(metodoPago)) {
-            compraRealizada.setMetodoPago(metodoPago.getMetodoPago());
-        } else {
-            throw new RuntimeException("El vendedor no acepta ese metodo de pago");
-        }
-        compraRealizada.setCantidadXProductos( compraRealizada.convertidorPublicacionesACantidadProducto(publicaciones) );
-        compraRealizada.vendedor = publicaciones.get(0).getVendedor();
-        compraRealizada.setFecha(LocalDate.now());
-
-        compraRealizada.setPrecioTotal(compraRealizada.calcularPrecioTotal(publicaciones));
-
-        return compraRealizada;
+    public CompraRealizada(Cliente cliente, List<CantidadXProducto> cantidadXProductos, MetodoPago metodoPago, Vendedor vendedor) {
+        this.fecha = LocalDate.now();
+        this.cantidadXProductos = cantidadXProductos;
+        this.precioTotal = calcularPrecioTotal(cantidadXProductos);
+        this.metodoPago = metodoPago.getMetodoPago();
+        this.vendedor = vendedor;
     }
 
-    private List<CantidadXProducto> convertidorPublicacionesACantidadProducto(List<Publicacion> publicaciones) {
-        Map<Publicacion, Integer> cantidadXProducto = new HashMap<>();
-        for (Publicacion publicacion : publicaciones) {
-            if (cantidadXProducto.containsKey(publicacion)) {
-                cantidadXProducto.put(publicacion, cantidadXProducto.get(publicacion) + 1);
-            } else {
-                cantidadXProducto.put(publicacion, 1);
-            }
-        }
-        List<CantidadXProducto> cantidadXProductos = new ArrayList<>();
-        for (Publicacion publicacion : cantidadXProducto.keySet()) {
-            cantidadXProductos.add( new CantidadXProducto(publicacion, cantidadXProducto.get(publicacion)) );
-        }
-        return cantidadXProductos;
+    public CompraRealizada() {
+
     }
 
-    private BigInteger calcularPrecioTotal(List<Publicacion> publicaciones) {
+    private BigInteger calcularPrecioTotal(List<CantidadXProducto> cantidadXProductos) {
         BigInteger precioTotal = BigInteger.ZERO;
-        for (Publicacion publicacion : publicaciones) {
-            precioTotal = precioTotal.add(BigInteger.valueOf(publicacion.getPrecioTotal()));
+        for (CantidadXProducto cantidadXProducto : cantidadXProductos) {
+            precioTotal = precioTotal.add( BigInteger.valueOf(cantidadXProducto.getCantidad()).multiply( BigInteger.valueOf(cantidadXProducto.getPublicacion().getPrecioTotal()) ) );;
         }
         return precioTotal;
     }

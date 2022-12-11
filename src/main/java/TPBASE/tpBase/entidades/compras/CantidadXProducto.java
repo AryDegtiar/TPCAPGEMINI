@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -15,9 +16,11 @@ public class CantidadXProducto {
     @GeneratedValue
     private Integer cantXProdID;
 
+    @NotNull
     @Column(name = "cantidad")
     private Integer cantidad;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "publicacion_xcantidad")
     private Publicacion publicacion;
