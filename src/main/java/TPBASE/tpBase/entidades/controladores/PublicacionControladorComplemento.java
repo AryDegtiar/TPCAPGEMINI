@@ -6,7 +6,6 @@ import TPBASE.tpBase.entidades.dto.setterSoloID.PersonalizacionesDTOsetterID;
 import TPBASE.tpBase.entidades.dto.setterSoloID.ProductoBaseDTOsetterID;
 import TPBASE.tpBase.entidades.dto.setterSoloID.VendedorDTOsetterID;
 import TPBASE.tpBase.entidades.productos.Personalizacion;
-import TPBASE.tpBase.entidades.productos.PosiblePersonalizacion;
 import TPBASE.tpBase.entidades.productos.ProductoBase;
 import TPBASE.tpBase.entidades.productos.Publicacion;
 import TPBASE.tpBase.entidades.repositorios.PersonalizacionRepositorio;
@@ -19,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +34,17 @@ public class PublicacionControladorComplemento {
     ProductoBaseRepositorio productoBaseRepo;
     @Autowired
     VendedorRepositorio vendedorRepo;
+
+    private final EntityManager em;
+
+    public PublicacionControladorComplemento(EntityManager em) {
+        this.em = em;
+    }
+
+    @GetMapping(path = "/publicacion/activa")
+    public ResponseEntity<?> getPublicacionesActivas() {
+        return new ResponseEntity<>( em.createQuery("SELECT p from Publicacion p WHERE p.activo = true AND p.estadoPublicacion = 'DISPONIBLE'").getResultList() , HttpStatus.OK);
+    }
 
     @PostMapping(path = "/publicacion")
     public @ResponseBody ResponseEntity<?> agregarPublicacion(@RequestBody PublicacionDTOsetter publicacionDTOsetter) {
