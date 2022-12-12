@@ -48,100 +48,85 @@ public class PublicacionControladorComplemento {
                                                      @RequestParam(name = "activo", required = false) Boolean activo,
                                                      @RequestParam(name = "estado", required = false) String estadoPublicacion,
                                                      @RequestParam(name = "categoriaId", required = false) Integer categoriaId){
+        try {
+            if (vendedorId != null || activo != null || estadoPublicacion != null) {
 
-        if (vendedorId != null || activo != null || estadoPublicacion != null) {
-            String query = null;
+                String query = null;
 
-            String queryVendedor = null;
-            if (vendedorId != null) {
-                Vendedor vendedor = vendedorRepo.findById(vendedorId).orElse(null);
-                if (vendedor == null) {
-                    return new ResponseEntity<>("No existe el vendedor con id " + vendedorId, HttpStatus.NOT_FOUND);
+                String queryVendedor = null;
+                if (vendedorId != null) {
+                    Vendedor vendedor = vendedorRepo.findById(vendedorId).orElse(null);
+                    if (vendedor == null) {
+                        return new ResponseEntity<>("No existe el vendedor con id " + vendedorId, HttpStatus.NOT_FOUND);
+                    }
+                    queryVendedor = "p.vendedor.id =" + vendedorId;
+                    if (query == null) {
+                        query = "SELECT p FROM Publicacion p WHERE " + queryVendedor;
+                    } else {
+                        query = query + " AND " + queryVendedor;
+                    }
                 }
-                queryVendedor = "p.vendedor.id =" + vendedorId;
-            }
-            String queryActivo = null;
-            if (activo != null) {
-                queryActivo = "p.activo =" + activo;
-            }
 
-            String queryCategoria = null;
-            if (categoriaId != null) {
-                queryCategoria = "p.productoBase.categoria.id =" + categoriaId;
-            }
+                String queryActivo = null;
+                if (activo != null) {
+                    queryActivo = "p.activo =" + activo;
+                    if (query == null) {
+                        query = "SELECT p FROM Publicacion p WHERE " + queryActivo;
+                    } else {
+                        query = query + " AND " + queryActivo;
+                    }
+                }
 
-            if (queryVendedor != null) {
-                if (query == null) {
-                    query = "SELECT p FROM Publicacion p WHERE " + queryVendedor;
+                String queryCategoria = null;
+                if (categoriaId != null) {
+                    queryCategoria = "p.productoBase.categoria.id =" + categoriaId;
+                    if (query == null) {
+                        query = "SELECT p FROM Publicacion p WHERE " + queryCategoria;
+                    } else {
+                        query = query + " AND " + queryCategoria;
+                    }
+                }
+
+                // esta parte es medio choclo feo pero si no lo hago de esta forma el enum no me lo reconoce
+                if (estadoPublicacion != null) {
+                    ;
+                    switch (estadoPublicacion) {
+                        case "DISPONIBLE":
+                            if (query == null) {
+                                query = "SELECT p FROM Publicacion p WHERE p.estadoPublicacion = :estado";
+                                return new ResponseEntity<>(em.createQuery(query).setParameter("estado", EnumEstado.DISPONIBLE).getResultList(), HttpStatus.OK);
+                            } else {
+                                return new ResponseEntity<>(em.createQuery(query + " AND p.estadoPublicacion = :estado").setParameter("estado", EnumEstado.DISPONIBLE).getResultList(), HttpStatus.OK);
+                            }
+                        case "PAUSADO":
+                            if (query == null) {
+                                query = "SELECT p FROM Publicacion p WHERE p.estadoPublicacion = :estado";
+                                return new ResponseEntity<>(em.createQuery(query).setParameter("estado", EnumEstado.PAUSADO).getResultList(), HttpStatus.OK);
+                            } else {
+                                return new ResponseEntity<>(em.createQuery(query + " AND p.estadoPublicacion = :estado").setParameter("estado", EnumEstado.PAUSADO).getResultList(), HttpStatus.OK);
+                            }
+                        case "CANCELADO":
+                            if (query == null) {
+                                query = "SELECT p FROM Publicacion p WHERE p.estadoPublicacion = :estado";
+                                return new ResponseEntity<>(em.createQuery(query).setParameter("estado", EnumEstado.CANCELADO).getResultList(), HttpStatus.OK);
+                            } else {
+                                return new ResponseEntity<>(em.createQuery(query + " AND p.estadoPublicacion = :estado").setParameter("estado", EnumEstado.CANCELADO).getResultList(), HttpStatus.OK);
+                            }
+                        default:
+                            return new ResponseEntity<>("No existe el estado de publicacion " + estadoPublicacion, HttpStatus.NOT_FOUND);
+                    }
                 } else {
-                    query = query + " AND " + queryVendedor;
+                    return new ResponseEntity<>(em.createQuery(query).getResultList(), HttpStatus.OK);
                 }
-            }
 
-            if (queryActivo != null) {
-                if (query == null) {
-                    query = "SELECT p FROM Publicacion p WHERE " + queryActivo;
-                } else {
-                    query = query + " AND " + queryActivo;
-                }
+            } else {
+                return new ResponseEntity<>(repo.findAll(), HttpStatus.OK);
             }
-
-            if (queryCategoria != null) {
-                if (query == null) {
-                    query = "SELECT p FROM Publicacion p WHERE " + queryCategoria;
-                } else {
-                    query = query + " AND " + queryCategoria;
-                }
-            }
-
-            if (estadoPublicacion != null) {;
-                switch (estadoPublicacion) {
-                    case "DISPONIBLE":
-                        if (query == null) {
-                            query = "SELECT p FROM Publicacion p WHERE p.estadoPublicacion = :estado";
-                            return new ResponseEntity<>(em.createQuery(query).setParameter("estado", EnumEstado.DISPONIBLE).getResultList(), HttpStatus.OK);
-                        } else {
-                            return new ResponseEntity<>(em.createQuery(query + " AND p.estadoPublicacion = :estado").setParameter("estado", EnumEstado.DISPONIBLE).getResultList(), HttpStatus.OK);
-                        }
-                    case "PAUSADO":
-                        if (query == null) {
-                            query = "SELECT p FROM Publicacion p WHERE p.estadoPublicacion = :estado";
-                            return new ResponseEntity<>(em.createQuery(query).setParameter("estado", EnumEstado.PAUSADO).getResultList(), HttpStatus.OK);
-                        } else {
-                            return new ResponseEntity<>(em.createQuery(query + " AND p.estadoPublicacion = :estado").setParameter("estado", EnumEstado.PAUSADO).getResultList(), HttpStatus.OK);
-                        }
-                    case "CANCELADO":
-                        if (query == null) {
-                            query = "SELECT p FROM Publicacion p WHERE p.estadoPublicacion = :estado";
-                            return new ResponseEntity<>(em.createQuery(query).setParameter("estado", EnumEstado.CANCELADO).getResultList(), HttpStatus.OK);
-                        } else {
-                            return new ResponseEntity<>(em.createQuery(query + " AND p.estadoPublicacion = :estado").setParameter("estado", EnumEstado.CANCELADO).getResultList(), HttpStatus.OK);
-                        }
-                    default:
-                        return new ResponseEntity<>("No existe el estado de publicacion " + estadoPublicacion, HttpStatus.NOT_FOUND);
-                }
-            }else{
-                return new ResponseEntity<>(em.createQuery(query).getResultList(), HttpStatus.OK);
-            }
-
-        }else{
-            return new ResponseEntity<>(repo.findAll(), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>("Hubo un error con la peticion", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
-
-    /*
-    @GetMapping(path = "/publicacion/activa")
-    public ResponseEntity<?> getPublicacionesActivas() {
-        return new ResponseEntity<>( em.createQuery("SELECT p from Publicacion p WHERE p.activo = true AND p.estadoPublicacion = 'DISPONIBLE'").getResultList() , HttpStatus.OK);
-    }
-
-    @GetMapping(path = "/publicacion/vendedor/{vendedorId}")
-    public ResponseEntity<?> getPublicacionesVendedor(@PathVariable("vendedorId") Integer vendedorId) {
-        return new ResponseEntity<>( em.createQuery("SELECT p from Publicacion p WHERE p.vendedor.id = " + vendedorId).getResultList() , HttpStatus.OK);
-    }
-
-     */
     @PostMapping(path = "/publicacion")
     public @ResponseBody ResponseEntity<?> agregarPublicacion(@RequestBody PublicacionDTOsetter publicacionDTOsetter) {
         try {
