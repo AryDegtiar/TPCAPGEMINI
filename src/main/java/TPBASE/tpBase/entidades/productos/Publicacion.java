@@ -26,7 +26,7 @@ public class Publicacion extends EntidadPersistente {
     @JoinColumn(name = "productoBase", referencedColumnName = "id")
     private ProductoBase productoBase;
 
-    @NonNull @NotEmpty
+    @NonNull
     @OneToMany
     @JoinColumn(name = "personalizacion", referencedColumnName = "id") //comento por que tira error
     private List<Personalizacion> personalizaciones; 
