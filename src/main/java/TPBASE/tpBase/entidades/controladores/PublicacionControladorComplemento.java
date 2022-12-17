@@ -43,6 +43,7 @@ public class PublicacionControladorComplemento {
     public PublicacionControladorComplemento(EntityManager em) {
         this.em = em;
     }
+
     @GetMapping(path = {"/publicacion","/publicacion/"})
     public ResponseEntity<?> getPublicacionesActivas(@RequestParam(name = "vendedorId", required = false) Integer vendedorId,
                                                      @RequestParam(name = "activo", required = false) Boolean activo,
@@ -127,6 +128,21 @@ public class PublicacionControladorComplemento {
         }
 
     }
+
+    // este get esta hecho para que haya una equivalencia en la vista de producto al agregar al carrito desde front
+    @GetMapping(path = {"/publicacion/{id}"})
+    public ResponseEntity<?> getPublicacion(@PathVariable Integer id){
+        try {
+            Publicacion publicacion = repo.findById(id).orElse(null);
+            if (publicacion == null) {
+                return new ResponseEntity<>("No existe la publicacion con id " + id, HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(publicacion, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>("Hubo un error con la peticion", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PostMapping(path = "/publicacion")
     public @ResponseBody ResponseEntity<?> agregarPublicacion(@RequestBody PublicacionDTOsetter publicacionDTOsetter) {
         try {

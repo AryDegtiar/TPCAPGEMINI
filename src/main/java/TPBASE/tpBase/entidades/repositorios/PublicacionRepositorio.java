@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 //@JsonPropertyOrder({"id","activo","estadoPublicacion","vendedor","precioTotal","productoBase","personalizaciones","productoBase"})
-@RepositoryRestResource(path = "publicacion", excerptProjection = PublicacionDTOgetter.class)
+@RepositoryRestResource(path = "publicacion ", excerptProjection = PublicacionDTOgetter.class)
 public interface PublicacionRepositorio extends JpaRepository<Publicacion, Integer> {
     /*
     public static Integer obtenerPrecioTotal(Publicacion publicacion){

@@ -89,7 +89,7 @@ public class TpBaseApplication {
 			vendedor1.addMetodoPago(metodoPagoCredVisa);
 			vendedor1 = vendedorRepositorio.save(vendedor1);
 
-			Vendedor vendedor2 = new Vendedor("mail@gmail.com", "123", "NIKE");
+			Vendedor vendedor2 = new Vendedor("puma@gmail.com", "123", "PUMA");
 			vendedor2.addMetodoPago(metodoPagoEfectivo);
 			vendedor2.addMetodoPago(metodoPagoTransBancaria);
 			vendedor2.addMetodoPago(metodoPagoDebVisa);
