@@ -40,7 +40,7 @@ public class PersonalizacionControladorComplemento {
                 Personalizacion personalizacion = new Personalizacion();
                 personalizacion.setPosiblePersonalizacion(posiblePersonalizacion);
                 personalizacion.setNombre(personalizacionDTOsetter.getNombre());
-                personalizacion.setContenido(personalizacionDTOsetter.getContenido());
+                //personalizacion.setContenido(personalizacionDTOsetter.getContenido());
                 personalizacion.setPrecio(personalizacionDTOsetter.getPrecio());
 
                 repo.save(personalizacion);

@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,6 +36,28 @@ public class ClienteControladorComplemento {
     private CompraRealizadaRepositorio compraRealizadaRepositorio;
     @Autowired
     private CantidadXProductoRepositorio cantidadXProductoRepositorio;
+
+    private final EntityManager em;
+
+    public ClienteControladorComplemento(EntityManager em) {
+        this.em = em;
+    }
+
+    @GetMapping("/cliente/login")
+    public ResponseEntity<?> getLogIn(@RequestParam(name = "email") String email,
+                                      @RequestParam(name = "password") String password) {
+
+        List<Cliente> resultCli = em.createQuery("SELECT c FROM Cliente c WHERE c.mail = :email AND c.contrasenia = :password", Cliente.class)
+                .setParameter("email", email)
+                .setParameter("password", password)
+                .getResultList();
+        if (resultCli.size() == 0){
+            return new ResponseEntity<>("Usuario o contraseña invalidos", HttpStatus.NOT_FOUND);
+        }else {
+            return new ResponseEntity<>(resultCli.get(0), HttpStatus.OK);
+        }
+
+    }
 
     @PostMapping("/cliente")
     public @ResponseBody ResponseEntity<?> agregarCliente(@RequestBody ClienteDTOsetter clienteDTOsetter) {

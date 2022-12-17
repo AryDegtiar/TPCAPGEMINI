@@ -40,11 +40,16 @@ public class Publicacion extends EntidadPersistente {
     @JoinColumn(name = "publicacion_x_vendedor")
     private Vendedor vendedor;
 
-    public Publicacion(EnumEstado estadoPublicacion, ProductoBase productoBase, Vendedor vendedor) {
+    @NonNull
+    @Column(name = "urlImagen")
+    private String urlImagen;
+
+    public Publicacion(EnumEstado estadoPublicacion, ProductoBase productoBase, Vendedor vendedor, String urlImagen) {
         this();
         this.estadoPublicacion = estadoPublicacion;
         this.productoBase = productoBase;
         this.vendedor = vendedor;
+        this.urlImagen = urlImagen;
     }
 
     public void calcularPrecioTotal(){

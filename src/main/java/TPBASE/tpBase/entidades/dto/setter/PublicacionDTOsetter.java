@@ -20,4 +20,6 @@ public class PublicacionDTOsetter {
 
     private Integer vendedorId;
 
+    private String urlImagen;
+
 }

@@ -26,6 +26,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RepositoryRestController
 public class PublicacionControladorComplemento {
 
@@ -226,6 +227,7 @@ public class PublicacionControladorComplemento {
             } else {
                 return new ResponseEntity<>("No se encontro la publicacion", HttpStatus.BAD_REQUEST);
             }
+
         }catch (Exception e){
             return new ResponseEntity<>("No se pudo modificar el vendedor, campos invalidos",HttpStatus.BAD_REQUEST);
         }
