@@ -54,13 +54,18 @@ public class CompraRealizada {
     @JoinColumn(name = "vendedor_CompraRealizada")
     private static Vendedor vendedor;
 
+    @NotNull
+    @JoinColumn(name = "direccion")
+    private String direccionEnvio;
 
-    public CompraRealizada(Cliente cliente, List<CantidadXProducto> cantidadXProductos, MetodoPago metodoPago, Vendedor vendedor) {
+
+    public CompraRealizada(List<CantidadXProducto> cantidadXProductos, MetodoPago metodoPago, Vendedor vendedor,String direccionEnvio) {
         this.fecha = LocalDate.now();
         this.cantidadXProductos = cantidadXProductos;
         this.precioTotal = calcularPrecioTotal(cantidadXProductos);
         this.metodoPago = metodoPago.getMetodoPago();
         this.vendedor = vendedor;
+        this.direccionEnvio = direccionEnvio;
     }
 
     public CompraRealizada() {

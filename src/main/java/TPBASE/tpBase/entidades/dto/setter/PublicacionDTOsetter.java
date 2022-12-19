@@ -22,4 +22,8 @@ public class PublicacionDTOsetter {
 
     private String urlImagen;
 
+    private String nombre;
+
+    private String descripcion;
+
 }

@@ -64,19 +64,27 @@ public class TpBaseApplication {
 			PosiblePersonalizacion posPechoTxt = posiblePersonalizacionRepositorio.save(new PosiblePersonalizacion(areaPecho, tipoTxt));
 			PosiblePersonalizacion posEspaldaImg = posiblePersonalizacionRepositorio.save(new PosiblePersonalizacion(areaEspalda, tipoImg));
 
-			ProductoBase productoBase = new ProductoBase(catRemeras, "REMERA SPIDERMAN", "descripcion", 360, 2);
+			ProductoBase productoBase = new ProductoBase(catRemeras, "REMERA PECHO ESPALDA IMAGEN", "descripcion", 200, 2);
 			productoBase.addPosiblePersonalizacion(posPechoImg);
 			productoBase.addPosiblePersonalizacion(posEspaldaImg);
 			productoBase = productoBaseRepositorio.save(productoBase);
 
-			ProductoBase productoBase2 = new ProductoBase(catRemeras, "REMERA SPIDERMAN", "descripcion", 360, 2);
+			ProductoBase productoBase2 = new ProductoBase(catRemeras, "REMERA PECHO IMG TXT", "descripcion", 500, 2);
 			productoBase2.addPosiblePersonalizacion(posPechoImg);
 			productoBase2.addPosiblePersonalizacion(posPechoTxt);
 			productoBase2 = productoBaseRepositorio.save(productoBase2);
 
+			ProductoBase productoBase3 = new ProductoBase(catPantalones, "PANTALON PECHO ESPALDA IMG TEX", "descripcion", 600, 2);
+			productoBase3.addPosiblePersonalizacion(posPechoImg);
+			productoBase3.addPosiblePersonalizacion(posPechoTxt);
+			productoBase.addPosiblePersonalizacion(posEspaldaImg);
+			productoBase3 = productoBaseRepositorio.save(productoBase3);
+
+
 			Personalizacion personalizacionPechoImg = personalizacionRepositorio.save(new Personalizacion(posPechoImg, "imagen de telarania", "linkContenido", 50));
 			Personalizacion personalizacionPechoTxt = personalizacionRepositorio.save(new Personalizacion(posPechoTxt, "texto bambino", "linkContenido", 60));
 			Personalizacion personalizacionEspaldaImg = personalizacionRepositorio.save(new Personalizacion(posEspaldaImg, "imagen bob sponja", "linkContenido", 70));
+			Personalizacion personalizacionEspaldaImg2 = personalizacionRepositorio.save(new Personalizacion(posEspaldaImg, "ñandu", "linkContenido", 100));
 
 			MetodoPago metodoPagoEfectivo = metodoPagoRepositorio.save(new MetodoPago(EnumMetodoPago.EFECTIVO));
 			MetodoPago metodoPagoCredVisa = metodoPagoRepositorio.save(new MetodoPago(EnumMetodoPago.CREDITO_VISA));
@@ -96,15 +104,18 @@ public class TpBaseApplication {
 			vendedor2.addMetodoPago(metodoPagoPagoFacil);
 			vendedor2 = vendedorRepositorio.save(vendedor2);
 
-			Publicacion publicacion = (new Publicacion(EnumEstado.DISPONIBLE, productoBase, vendedor1, "https://http2.mlstatic.com/D_NQ_NP_2X_686172-MLA50151706938_052022-F.webp"));
-			publicacion.addPersonalizacion(personalizacionPechoImg);
-			publicacion.addPersonalizacion(personalizacionPechoTxt);
+			Publicacion publicacion = (new Publicacion(EnumEstado.DISPONIBLE, productoBase, vendedor1, "https://http2.mlstatic.com/D_NQ_NP_2X_686172-MLA50151706938_052022-F.webp", "Spiderman blanca", "Remera blanca con tela 100% algodon de excelente calidad, todas las tallas disponibles"));
+			publicacion.addPersonalizacion(personalizacionEspaldaImg);
 			publicacion = publicacionRepositorio.save(publicacion);
 
-			Publicacion publicacion2 = (new Publicacion(EnumEstado.DISPONIBLE, productoBase, vendedor2, "https://http2.mlstatic.com/D_NQ_NP_2X_873157-MLA48728952944_012022-F.webp"));
+			Publicacion publicacion2 = (new Publicacion(EnumEstado.DISPONIBLE, productoBase2, vendedor2, "https://http2.mlstatic.com/D_NQ_NP_2X_873157-MLA48728952944_012022-F.webp", "Spiderman roja", "Remera roja con tela 100% algodon de excelente calidad, todas las tallas disponibles"));
 			publicacion2.addPersonalizacion(personalizacionPechoImg);
 			publicacion2.addPersonalizacion(personalizacionPechoTxt);
 			publicacion2 = publicacionRepositorio.save(publicacion2);
+
+			Publicacion publicacion3 = (new Publicacion(EnumEstado.DISPONIBLE, productoBase3, vendedor1, "https://securtexweb.com/wp-content/uploads/2021/05/pcemGaucho.png", "Cargo marron", "Cargo marron con tela 100% algodon de excelente calidad, todas las tallas disponibles"));
+			publicacion3.addPersonalizacion(personalizacionEspaldaImg2);
+			publicacion3 = publicacionRepositorio.save(publicacion3);
 
 
 

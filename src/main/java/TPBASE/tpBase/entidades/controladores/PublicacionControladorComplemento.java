@@ -8,13 +8,11 @@ import TPBASE.tpBase.entidades.dto.setterSoloID.VendedorDTOsetterID;
 import TPBASE.tpBase.entidades.enums.EnumEstado;
 import TPBASE.tpBase.entidades.enums.EnumMetodoPago;
 import TPBASE.tpBase.entidades.metodosPagos.MetodoPago;
+import TPBASE.tpBase.entidades.productos.Categoria;
 import TPBASE.tpBase.entidades.productos.Personalizacion;
 import TPBASE.tpBase.entidades.productos.ProductoBase;
 import TPBASE.tpBase.entidades.productos.Publicacion;
-import TPBASE.tpBase.entidades.repositorios.PersonalizacionRepositorio;
-import TPBASE.tpBase.entidades.repositorios.ProductoBaseRepositorio;
-import TPBASE.tpBase.entidades.repositorios.PublicacionRepositorio;
-import TPBASE.tpBase.entidades.repositorios.VendedorRepositorio;
+import TPBASE.tpBase.entidades.repositorios.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.HttpStatus;
@@ -37,6 +35,8 @@ public class PublicacionControladorComplemento {
     ProductoBaseRepositorio productoBaseRepo;
     @Autowired
     VendedorRepositorio vendedorRepo;
+    @Autowired
+    CategoriaRepositorio categoriaRepo;
 
     private final EntityManager em;
 
@@ -47,10 +47,10 @@ public class PublicacionControladorComplemento {
     @GetMapping(path = {"/publicacion","/publicacion/"})
     public ResponseEntity<?> getPublicacionesActivas(@RequestParam(name = "vendedorId", required = false) Integer vendedorId,
                                                      @RequestParam(name = "activo", required = false) Boolean activo,
-                                                     @RequestParam(name = "estado", required = false) String estadoPublicacion,
-                                                     @RequestParam(name = "categoriaId", required = false) Integer categoriaId){
+                                                     @RequestParam(name = "categoriaId", required = false) Integer categoriaId,
+                                                     @RequestParam(name = "estado", required = false) String estadoPublicacion){
         try {
-            if (vendedorId != null || activo != null || estadoPublicacion != null) {
+            if (vendedorId != null || activo != null || estadoPublicacion != null || categoriaId != null) {
 
                 String query = null;
 
@@ -80,6 +80,22 @@ public class PublicacionControladorComplemento {
 
                 String queryCategoria = null;
                 if (categoriaId != null) {
+                    Categoria categoria = categoriaRepo.findById(categoriaId).orElse(null);
+                    if (categoria == null) {
+                        return new ResponseEntity<>("No existe la categoria con id " + categoriaId, HttpStatus.NOT_FOUND);
+                    }
+                    queryCategoria = "p.productoBase.categoria.id =" + categoriaId;
+                    if (query == null) {
+                        query = "SELECT p FROM Publicacion p WHERE " + queryCategoria;
+                    } else {
+                        query = query + " AND " + queryCategoria;
+                    }
+
+                }
+
+/*
+                String queryCategoria = null;
+                if (categoriaId != null) {
                     queryCategoria = "p.productoBase.categoria.id =" + categoriaId;
                     if (query == null) {
                         query = "SELECT p FROM Publicacion p WHERE " + queryCategoria;
@@ -87,10 +103,10 @@ public class PublicacionControladorComplemento {
                         query = query + " AND " + queryCategoria;
                     }
                 }
-
+*/
                 // esta parte es medio choclo feo pero si no lo hago de esta forma el enum no me lo reconoce
                 if (estadoPublicacion != null) {
-                    ;
+                    System.out.println("ENTREEEEEEEEEE");
                     switch (estadoPublicacion) {
                         case "DISPONIBLE":
                             if (query == null) {
