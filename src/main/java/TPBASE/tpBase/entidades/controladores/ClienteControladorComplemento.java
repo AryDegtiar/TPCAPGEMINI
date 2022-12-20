@@ -61,15 +61,21 @@ public class ClienteControladorComplemento {
 
     @PostMapping("/cliente")
     public @ResponseBody ResponseEntity<?> agregarCliente(@RequestBody ClienteDTOsetter clienteDTOsetter) {
-        try {
-            Cliente cliente = new Cliente();
-            cliente.setMail(clienteDTOsetter.getMail());
-            cliente.setContrasenia(clienteDTOsetter.getContrasenia());
-            cliente = clienteRepositorio.save(cliente);
-            return new ResponseEntity<>(cliente, HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>("No se pudo agregar el ciente, campos invalidos", HttpStatus.BAD_REQUEST);
-        }
+        //try {
+            if (em.createQuery("SELECT c FROM Cliente c WHERE c.mail = :email", Cliente.class)
+                    .setParameter("email", clienteDTOsetter.getMail())
+                    .getResultList().size() != 0) {
+                return new ResponseEntity<>("El mail ya esta registrado", HttpStatus.BAD_REQUEST);
+            }else {
+                Cliente cliente = new Cliente();
+                cliente.setMail(clienteDTOsetter.getMail());
+                cliente.setContrasenia(clienteDTOsetter.getContrasenia());
+                cliente = clienteRepositorio.save(cliente);
+                return new ResponseEntity<>(cliente, HttpStatus.OK);
+            }
+        //}catch (Exception e){
+         //   return new ResponseEntity<>("No se pudo agregar el ciente, campos invalidos", HttpStatus.BAD_REQUEST);
+        //}
     }
 
     @Transactional
