@@ -2,6 +2,7 @@ package TPBASE.tpBase.entidades.controladores;
 
 import TPBASE.tpBase.entidades.actores.Vendedor;
 import TPBASE.tpBase.entidades.dto.setter.PublicacionDTOsetter;
+import TPBASE.tpBase.entidades.dto.setter.SumarClickPublicacionDTOsetter;
 import TPBASE.tpBase.entidades.dto.setterSoloID.PersonalizacionesDTOsetterID;
 import TPBASE.tpBase.entidades.dto.setterSoloID.ProductoBaseDTOsetterID;
 import TPBASE.tpBase.entidades.dto.setterSoloID.VendedorDTOsetterID;
@@ -150,6 +151,16 @@ public class PublicacionControladorComplemento {
         }
     }
 
+    @GetMapping(path = {"/publicacion/masVisitados/{maxCantProductos}"})
+    public ResponseEntity<?> getPublicacionesMasVisitadas(@PathVariable Integer maxCantProductos){
+        try {
+            String query = "SELECT p FROM Publicacion p ORDER BY p.cantidadVisitas DESC";
+            return new ResponseEntity<>(em.createQuery(query).setMaxResults(maxCantProductos).getResultList(), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>("Hubo un error con la peticion", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PostMapping(path = "/publicacion")
     public @ResponseBody ResponseEntity<?> agregarPublicacion(@RequestBody PublicacionDTOsetter publicacionDTOsetter) {
         try {
@@ -192,6 +203,25 @@ public class PublicacionControladorComplemento {
 
                 repo.save(publicacion);
                 return new ResponseEntity<Publicacion>(publicacion, HttpStatus.OK);
+            }
+        }catch (Exception e){
+            return new ResponseEntity<>("No se pudo cargar la publicacion, campos invalidos",HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping(path = "/publicacion/sumarVisita/{id}")
+    public @ResponseBody ResponseEntity<?> sumarClick(@PathVariable Integer id, @RequestBody SumarClickPublicacionDTOsetter sumarClickPublicacionDTOsetter) {
+        try {
+            Publicacion publicacion = repo.findById(id).orElse(null);
+            if (publicacion == null) {
+                return new ResponseEntity<>("No existe la publicacion con id " + id, HttpStatus.NOT_FOUND);
+            }
+            if (sumarClickPublicacionDTOsetter.getSumarVisita()) {
+                publicacion.sumarVisita();
+                repo.save(publicacion);
+                return new ResponseEntity<Publicacion>(publicacion, HttpStatus.OK);
+            }else{
+                return new ResponseEntity<>("No se pudo sumar el click",HttpStatus.BAD_REQUEST);
             }
         }catch (Exception e){
             return new ResponseEntity<>("No se pudo cargar la publicacion, campos invalidos",HttpStatus.BAD_REQUEST);

@@ -8,7 +8,6 @@ import lombok.NonNull;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +51,10 @@ public class Publicacion extends EntidadPersistente {
     @Column(name = "descripcion")
     private String descripcion;
 
+    @NonNull
+    @Column(name = "cantidadClicks")
+    private Integer cantidadVisitas;
+
     public Publicacion(EnumEstado estadoPublicacion, ProductoBase productoBase, Vendedor vendedor, String urlImagen, String nombre, String descripcion) {
         this();
         this.estadoPublicacion = estadoPublicacion;
@@ -60,6 +63,7 @@ public class Publicacion extends EntidadPersistente {
         this.urlImagen = urlImagen;
         this.nombre = nombre;
         this.descripcion = descripcion;
+        this.cantidadVisitas = 0;
     }
 
     public void calcularPrecioTotal(){
@@ -70,8 +74,13 @@ public class Publicacion extends EntidadPersistente {
         this.setPrecioTotal(precioTotal);
     }
 
+    public void sumarVisita(){
+        this.cantidadVisitas++;
+    }
+
     public Publicacion() {
         this.personalizaciones = new ArrayList<>();
+        this.cantidadVisitas = 0;
     }
 
     public void addPersonalizacion(Personalizacion personalizacion){
