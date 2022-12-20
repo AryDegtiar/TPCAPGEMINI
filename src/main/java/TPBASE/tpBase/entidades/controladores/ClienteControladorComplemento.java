@@ -86,7 +86,7 @@ public class ClienteControladorComplemento {
     // COMPRAS
     @PostMapping("/cliente/{id}/compraRealizadas")
     public @ResponseBody ResponseEntity<?> agregarCompra(@PathVariable("id") Integer clienteId, @RequestBody PublicacionesDTOsetterID publicacionesDTOsetterID) {
-        //try {
+        try {
             if (clienteRepositorio.existsById(clienteId)) {
                 Cliente cliente = clienteRepositorio.findById(clienteId).get();
                 List<Publicacion> publicaciones = new ArrayList<>();
@@ -126,9 +126,9 @@ public class ClienteControladorComplemento {
             } else {
                 return new ResponseEntity<>("No se pudo agregar la compra, id de cliente invalido", HttpStatus.BAD_REQUEST);
             }
-        //}catch (Exception e){
-        //    return new ResponseEntity<>("No se pudo agregar la compra, campos invalidos", HttpStatus.BAD_REQUEST);
-        //}
+        }catch (Exception e){
+            return new ResponseEntity<>("No se pudo agregar la compra, campos invalidos", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("/cliente/{id}/compraRealizadas/{idCompra}")

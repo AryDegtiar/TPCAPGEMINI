@@ -13,6 +13,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigInteger;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +32,10 @@ public class CompraRealizada {
     @NotNull
     @Column(name = "fecha", columnDefinition = "DATE")
     private LocalDate fecha;
+
+    @NotNull
+    @Column(name = "hora", columnDefinition = "TIME")
+    private LocalTime hora;
 
     // ojo ver, es para opcion 2
     @OneToMany
@@ -61,6 +66,7 @@ public class CompraRealizada {
 
     public CompraRealizada(List<CantidadXProducto> cantidadXProductos, MetodoPago metodoPago, Vendedor vendedor,String direccionEnvio) {
         this.fecha = LocalDate.now();
+        this.hora = LocalTime.now();
         this.cantidadXProductos = cantidadXProductos;
         this.precioTotal = calcularPrecioTotal(cantidadXProductos);
         this.metodoPago = metodoPago.getMetodoPago();

@@ -14,6 +14,7 @@ import TPBASE.tpBase.entidades.productos.ProductoBase;
 import TPBASE.tpBase.entidades.productos.Publicacion;
 import TPBASE.tpBase.entidades.repositorios.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -93,17 +94,6 @@ public class PublicacionControladorComplemento {
 
                 }
 
-/*
-                String queryCategoria = null;
-                if (categoriaId != null) {
-                    queryCategoria = "p.productoBase.categoria.id =" + categoriaId;
-                    if (query == null) {
-                        query = "SELECT p FROM Publicacion p WHERE " + queryCategoria;
-                    } else {
-                        query = query + " AND " + queryCategoria;
-                    }
-                }
-*/
                 // esta parte es medio choclo feo pero si no lo hago de esta forma el enum no me lo reconoce
                 if (estadoPublicacion != null) {
                     System.out.println("ENTREEEEEEEEEE");
@@ -144,6 +134,7 @@ public class PublicacionControladorComplemento {
         }
 
     }
+
 
     // este get esta hecho para que haya una equivalencia en la vista de producto al agregar al carrito desde front
     @GetMapping(path = {"/publicacion/{id}"})
