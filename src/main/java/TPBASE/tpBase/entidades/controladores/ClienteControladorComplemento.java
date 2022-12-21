@@ -61,7 +61,7 @@ public class ClienteControladorComplemento {
 
     @PostMapping("/cliente")
     public @ResponseBody ResponseEntity<?> agregarCliente(@RequestBody ClienteDTOsetter clienteDTOsetter) {
-        //try {
+        try {
             if (em.createQuery("SELECT c FROM Cliente c WHERE c.mail = :email", Cliente.class)
                     .setParameter("email", clienteDTOsetter.getMail())
                     .getResultList().size() != 0) {
@@ -73,9 +73,9 @@ public class ClienteControladorComplemento {
                 cliente = clienteRepositorio.save(cliente);
                 return new ResponseEntity<>(cliente, HttpStatus.OK);
             }
-        //}catch (Exception e){
-         //   return new ResponseEntity<>("No se pudo agregar el ciente, campos invalidos", HttpStatus.BAD_REQUEST);
-        //}
+        }catch (Exception e){
+            return new ResponseEntity<>("No se pudo agregar el ciente, campos invalidos", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @Transactional
