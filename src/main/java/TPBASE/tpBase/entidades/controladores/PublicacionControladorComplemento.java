@@ -199,6 +199,9 @@ public class PublicacionControladorComplemento {
                 publicacion.setProductoBase(productoBase);
                 publicacion.setPersonalizaciones(personalizaciones);
                 publicacion.setVendedor(vendedor);
+                publicacion.setNombre(publicacionDTOsetter.getNombre());
+                publicacion.setDescripcion(publicacionDTOsetter.getDescripcion());
+                publicacion.setUrlImagen(publicacionDTOsetter.getUrlImagen());
                 publicacion.calcularPrecioTotal();
 
                 repo.save(publicacion);

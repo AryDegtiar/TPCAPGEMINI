@@ -105,6 +105,8 @@ public class TpBaseApplication {
 			Personalizacion persoProd4 = personalizacionRepositorio.save(new Personalizacion(posPechoImg, "imagen de ñandu", "linkContenido", 50));
 			Personalizacion persoProd5 = personalizacionRepositorio.save(new Personalizacion(posPechoTxt, "texto de cordon", "linkContenido", 10));
 			Personalizacion persoProd6 = personalizacionRepositorio.save(new Personalizacion(posEspaldaTxt, "texto de marca", "linkContenido", 80));
+			Personalizacion persoProd7_1 = personalizacionRepositorio.save(new Personalizacion(posPechoImg, "Imangen logo capgemini", "linkContenido", 80));
+			Personalizacion persoProd7_2 = personalizacionRepositorio.save(new Personalizacion(posEspaldaImg, "Imangen logo capgemini atras", "linkContenido", 10));
 
 			MetodoPago metodoPagoEfectivo = metodoPagoRepositorio.save(new MetodoPago(EnumMetodoPago.EFECTIVO));
 			MetodoPago metodoPagoCredVisa = metodoPagoRepositorio.save(new MetodoPago(EnumMetodoPago.CREDITO_VISA));
