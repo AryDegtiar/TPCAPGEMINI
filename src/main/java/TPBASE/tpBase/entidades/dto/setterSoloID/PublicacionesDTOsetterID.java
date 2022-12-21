@@ -8,4 +8,5 @@ import java.util.List;
 public class PublicacionesDTOsetterID {
     private List<Integer> publicacionesId;
     private Integer metodoPagoId;
+    private String direccionEnvio;
 }

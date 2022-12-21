@@ -8,7 +8,6 @@ import lombok.NonNull;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,9 +25,9 @@ public class Publicacion extends EntidadPersistente {
     @JoinColumn(name = "productoBase", referencedColumnName = "id")
     private ProductoBase productoBase;
 
-    @NonNull @NotEmpty
+    @NonNull
     @OneToMany
-    @JoinColumn(name = "personalizacion", referencedColumnName = "id") //comento por que tira error
+    @JoinColumn(name = "publicacionId", referencedColumnName = "id") //comento por que tira error
     private List<Personalizacion> personalizaciones; 
 
     @NonNull
@@ -40,11 +39,31 @@ public class Publicacion extends EntidadPersistente {
     @JoinColumn(name = "publicacion_x_vendedor")
     private Vendedor vendedor;
 
-    public Publicacion(EnumEstado estadoPublicacion, ProductoBase productoBase, Vendedor vendedor) {
+    @NonNull
+    @Column(name = "urlImagen")
+    private String urlImagen;
+
+    @NonNull
+    @Column(name = "nombre")
+    private String nombre;
+
+    @NonNull
+    @Column(name = "descripcion")
+    private String descripcion;
+
+    @NonNull
+    @Column(name = "cantidadClicks")
+    private Integer cantidadVisitas;
+
+    public Publicacion(EnumEstado estadoPublicacion, ProductoBase productoBase, Vendedor vendedor, String urlImagen, String nombre, String descripcion) {
         this();
         this.estadoPublicacion = estadoPublicacion;
         this.productoBase = productoBase;
         this.vendedor = vendedor;
+        this.urlImagen = urlImagen;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.cantidadVisitas = 0;
     }
 
     public void calcularPrecioTotal(){
@@ -55,8 +74,13 @@ public class Publicacion extends EntidadPersistente {
         this.setPrecioTotal(precioTotal);
     }
 
+    public void sumarVisita(){
+        this.cantidadVisitas++;
+    }
+
     public Publicacion() {
         this.personalizaciones = new ArrayList<>();
+        this.cantidadVisitas = 0;
     }
 
     public void addPersonalizacion(Personalizacion personalizacion){

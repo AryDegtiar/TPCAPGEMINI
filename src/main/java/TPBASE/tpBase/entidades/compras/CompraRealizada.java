@@ -22,6 +22,7 @@ import java.time.LocalDate;
 import javax.validation.constraints.NotNull;
 import java.math.BigInteger;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 >>>>>>> test-api-dto
 import java.util.HashMap;
@@ -43,9 +44,16 @@ public class CompraRealizada {
     private LocalDate fecha;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     @OneToMany // se puede agregar esto por cascada
     @JoinColumn(name = "compraRealizadaID", referencedColumnName = "id")
 =======
+=======
+    @NotNull
+    @Column(name = "hora", columnDefinition = "TIME")
+    private LocalTime hora;
+
+>>>>>>> test-api-dto
     // ojo ver, es para opcion 2
     @OneToMany
     @JoinColumn(name = "compraRealizadaID", referencedColumnName = "comprareali_id")
@@ -69,13 +77,19 @@ public class CompraRealizada {
     @JoinColumn(name = "vendedor_CompraRealizada")
     private static Vendedor vendedor;
 
+    @NotNull
+    @JoinColumn(name = "direccion")
+    private String direccionEnvio;
 
-    public CompraRealizada(Cliente cliente, List<CantidadXProducto> cantidadXProductos, MetodoPago metodoPago, Vendedor vendedor) {
+
+    public CompraRealizada(List<CantidadXProducto> cantidadXProductos, MetodoPago metodoPago, Vendedor vendedor,String direccionEnvio) {
         this.fecha = LocalDate.now();
+        this.hora = LocalTime.now();
         this.cantidadXProductos = cantidadXProductos;
         this.precioTotal = calcularPrecioTotal(cantidadXProductos);
         this.metodoPago = metodoPago.getMetodoPago();
         this.vendedor = vendedor;
+        this.direccionEnvio = direccionEnvio;
     }
 
     public CompraRealizada() {

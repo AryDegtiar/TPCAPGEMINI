@@ -19,9 +19,11 @@ public class Personalizacion extends EntidadPersistente {
     @NonNull @NotBlank
     @Column(name = "nombre")
     private String nombre;
+    /*
     @NonNull @NotBlank
     @Column(name = "contenido")
     private String contenido;
+     */
     @NonNull
     @Column(name = "precio")
     private Integer precio;
@@ -29,7 +31,7 @@ public class Personalizacion extends EntidadPersistente {
     public Personalizacion(PosiblePersonalizacion posiblePersonalizacion, String nombre, String contenido, Integer precio) {
         this.posiblePersonalizacion = posiblePersonalizacion;
         this.nombre = nombre;
-        this.contenido = contenido;
+        //this.contenido = contenido;
         this.precio = precio;
     }
     public Personalizacion() {

@@ -32,4 +32,13 @@ public class Cliente extends EntidadPersistente {
     public void agregarCompra(CompraRealizada compraRealizada) {
         this.compraRealizadas.add(compraRealizada);
     }
+
+    public Cliente(String mail, String contrasenia) {
+        this();
+        this.mail = mail;
+        this.contrasenia = contrasenia;
+    }
+
+    public Cliente() {
+    }
 }

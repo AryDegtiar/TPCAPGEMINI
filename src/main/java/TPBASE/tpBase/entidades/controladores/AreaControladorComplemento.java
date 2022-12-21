@@ -21,9 +21,6 @@ public class AreaControladorComplemento {
     @Autowired
     AreaPersonalizacionRepositorio areaPersonalizacionRepositorio;
 
-    @Autowired
-    PosiblePersonalizacionRepositorio posiblePersonalizacionRepositorio;
-
     @PostMapping(path = "/areapersonalizacion")
     public @ResponseBody ResponseEntity<?> agregarAreaPersonalizacion(@RequestBody AreaPersonalizacion areaPersonalizacion) {
         try {
@@ -36,20 +33,15 @@ public class AreaControladorComplemento {
 
     @DeleteMapping(path = {"/areapersonalizacion/{areaID}"})
     @Transactional
-    public @ResponseBody ResponseEntity<AreaPersonalizacion> darDeBajaArea(@PathVariable("areaID") Integer areaID){
+    public @ResponseBody ResponseEntity<?> darDeBajaArea(@PathVariable("areaID") Integer areaID){
         AreaPersonalizacion area;
         if (areaPersonalizacionRepositorio.existsById(areaID)){
             area = areaPersonalizacionRepositorio.findById(areaID).get();
             area.setActivo(false);
             return new ResponseEntity<AreaPersonalizacion>(area, HttpStatus.OK);
         }else{
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<>("Error, area no encontrada",HttpStatus.NOT_FOUND);
         }
-
-        // modificar todas lass posibles personalizaciones que tengan a el area anulada para que aparezca como inactivo
-        //boolean b = posiblePersonalizacionRepositorio.existsByAreaPersonalizacionId(areaID);
-        //boolean b = posiblePersonalizacionRepositorio.existsByAreaPersonalizacion(area);
-        //List<PosiblePersonalizacion> p = posiblePersonalizacionRepositorio.findAllByAreaPersonalizacion(area);
     }
 
 }

@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,14 +37,42 @@ public class ClienteControladorComplemento {
     @Autowired
     private CantidadXProductoRepositorio cantidadXProductoRepositorio;
 
+    private final EntityManager em;
+
+    public ClienteControladorComplemento(EntityManager em) {
+        this.em = em;
+    }
+
+    @GetMapping("/cliente/login")
+    public ResponseEntity<?> getLogIn(@RequestParam(name = "email") String email,
+                                      @RequestParam(name = "password") String password) {
+
+        List<Cliente> resultCli = em.createQuery("SELECT c FROM Cliente c WHERE c.mail = :email AND c.contrasenia = :password", Cliente.class)
+                .setParameter("email", email)
+                .setParameter("password", password)
+                .getResultList();
+        if (resultCli.size() == 0){
+            return new ResponseEntity<>("Usuario o contraseña invalidos", HttpStatus.NOT_FOUND);
+        }else {
+            return new ResponseEntity<>(resultCli.get(0), HttpStatus.OK);
+        }
+
+    }
+
     @PostMapping("/cliente")
     public @ResponseBody ResponseEntity<?> agregarCliente(@RequestBody ClienteDTOsetter clienteDTOsetter) {
         try {
-            Cliente cliente = new Cliente();
-            cliente.setMail(clienteDTOsetter.getMail());
-            cliente.setContrasenia(clienteDTOsetter.getContrasenia());
-            cliente = clienteRepositorio.save(cliente);
-            return new ResponseEntity<>(cliente, HttpStatus.OK);
+            if (em.createQuery("SELECT c FROM Cliente c WHERE c.mail = :email", Cliente.class)
+                    .setParameter("email", clienteDTOsetter.getMail())
+                    .getResultList().size() != 0) {
+                return new ResponseEntity<>("El mail ya esta registrado", HttpStatus.BAD_REQUEST);
+            }else {
+                Cliente cliente = new Cliente();
+                cliente.setMail(clienteDTOsetter.getMail());
+                cliente.setContrasenia(clienteDTOsetter.getContrasenia());
+                cliente = clienteRepositorio.save(cliente);
+                return new ResponseEntity<>(cliente, HttpStatus.OK);
+            }
         }catch (Exception e){
             return new ResponseEntity<>("No se pudo agregar el ciente, campos invalidos", HttpStatus.BAD_REQUEST);
         }
@@ -93,7 +122,7 @@ public class ClienteControladorComplemento {
                 //creo la compra y la guardo
                 MetodoPago metodoPago = metodoPagoRepositorio.findById(publicacionesDTOsetterID.getMetodoPagoId()).get();
                 Vendedor vendedor = publicaciones.get(0).getVendedor();
-                CompraRealizada compraRealizada = new CompraRealizada(cliente, cantidadXProductos, metodoPago, vendedor);
+                CompraRealizada compraRealizada = new CompraRealizada(cantidadXProductos, metodoPago, vendedor, publicacionesDTOsetterID.getDireccionEnvio());
                 compraRealizadaRepositorio.save(compraRealizada);
 
                 cliente.agregarCompra(compraRealizada);

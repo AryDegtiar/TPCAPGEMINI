@@ -12,7 +12,7 @@ public class PersonalizacionDTOsetter {
 
     private String nombre;
 
-    private String contenido;
+    //private String contenido;
 
     private Integer precio;
 }

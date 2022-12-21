@@ -2,20 +2,20 @@ package TPBASE.tpBase.entidades.controladores;
 
 import TPBASE.tpBase.entidades.actores.Vendedor;
 import TPBASE.tpBase.entidades.dto.setter.PublicacionDTOsetter;
+import TPBASE.tpBase.entidades.dto.setter.SumarClickPublicacionDTOsetter;
 import TPBASE.tpBase.entidades.dto.setterSoloID.PersonalizacionesDTOsetterID;
 import TPBASE.tpBase.entidades.dto.setterSoloID.ProductoBaseDTOsetterID;
 import TPBASE.tpBase.entidades.dto.setterSoloID.VendedorDTOsetterID;
 import TPBASE.tpBase.entidades.enums.EnumEstado;
 import TPBASE.tpBase.entidades.enums.EnumMetodoPago;
 import TPBASE.tpBase.entidades.metodosPagos.MetodoPago;
+import TPBASE.tpBase.entidades.productos.Categoria;
 import TPBASE.tpBase.entidades.productos.Personalizacion;
 import TPBASE.tpBase.entidades.productos.ProductoBase;
 import TPBASE.tpBase.entidades.productos.Publicacion;
-import TPBASE.tpBase.entidades.repositorios.PersonalizacionRepositorio;
-import TPBASE.tpBase.entidades.repositorios.ProductoBaseRepositorio;
-import TPBASE.tpBase.entidades.repositorios.PublicacionRepositorio;
-import TPBASE.tpBase.entidades.repositorios.VendedorRepositorio;
+import TPBASE.tpBase.entidades.repositorios.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,19 +37,22 @@ public class PublicacionControladorComplemento {
     ProductoBaseRepositorio productoBaseRepo;
     @Autowired
     VendedorRepositorio vendedorRepo;
+    @Autowired
+    CategoriaRepositorio categoriaRepo;
 
     private final EntityManager em;
 
     public PublicacionControladorComplemento(EntityManager em) {
         this.em = em;
     }
+
     @GetMapping(path = {"/publicacion","/publicacion/"})
     public ResponseEntity<?> getPublicacionesActivas(@RequestParam(name = "vendedorId", required = false) Integer vendedorId,
                                                      @RequestParam(name = "activo", required = false) Boolean activo,
-                                                     @RequestParam(name = "estado", required = false) String estadoPublicacion,
-                                                     @RequestParam(name = "categoriaId", required = false) Integer categoriaId){
+                                                     @RequestParam(name = "categoriaId", required = false) Integer categoriaId,
+                                                     @RequestParam(name = "estado", required = false) String estadoPublicacion){
         try {
-            if (vendedorId != null || activo != null || estadoPublicacion != null) {
+            if (vendedorId != null || activo != null || estadoPublicacion != null || categoriaId != null) {
 
                 String query = null;
 
@@ -79,17 +82,22 @@ public class PublicacionControladorComplemento {
 
                 String queryCategoria = null;
                 if (categoriaId != null) {
+                    Categoria categoria = categoriaRepo.findById(categoriaId).orElse(null);
+                    if (categoria == null) {
+                        return new ResponseEntity<>("No existe la categoria con id " + categoriaId, HttpStatus.NOT_FOUND);
+                    }
                     queryCategoria = "p.productoBase.categoria.id =" + categoriaId;
                     if (query == null) {
                         query = "SELECT p FROM Publicacion p WHERE " + queryCategoria;
                     } else {
                         query = query + " AND " + queryCategoria;
                     }
+
                 }
 
                 // esta parte es medio choclo feo pero si no lo hago de esta forma el enum no me lo reconoce
                 if (estadoPublicacion != null) {
-                    ;
+                    System.out.println("ENTREEEEEEEEEE");
                     switch (estadoPublicacion) {
                         case "DISPONIBLE":
                             if (query == null) {
@@ -127,6 +135,32 @@ public class PublicacionControladorComplemento {
         }
 
     }
+
+
+    // este get esta hecho para que haya una equivalencia en la vista de producto al agregar al carrito desde front
+    @GetMapping(path = {"/publicacion/{id}"})
+    public ResponseEntity<?> getPublicacion(@PathVariable Integer id){
+        try {
+            Publicacion publicacion = repo.findById(id).orElse(null);
+            if (publicacion == null) {
+                return new ResponseEntity<>("No existe la publicacion con id " + id, HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(publicacion, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>("Hubo un error con la peticion", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(path = {"/publicacion/masVisitados/{maxCantProductos}"})
+    public ResponseEntity<?> getPublicacionesMasVisitadas(@PathVariable Integer maxCantProductos){
+        try {
+            String query = "SELECT p FROM Publicacion p ORDER BY p.cantidadVisitas DESC";
+            return new ResponseEntity<>(em.createQuery(query).setMaxResults(maxCantProductos).getResultList(), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>("Hubo un error con la peticion", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PostMapping(path = "/publicacion")
     public @ResponseBody ResponseEntity<?> agregarPublicacion(@RequestBody PublicacionDTOsetter publicacionDTOsetter) {
         try {
@@ -169,6 +203,25 @@ public class PublicacionControladorComplemento {
 
                 repo.save(publicacion);
                 return new ResponseEntity<Publicacion>(publicacion, HttpStatus.OK);
+            }
+        }catch (Exception e){
+            return new ResponseEntity<>("No se pudo cargar la publicacion, campos invalidos",HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping(path = "/publicacion/sumarVisita/{id}")
+    public @ResponseBody ResponseEntity<?> sumarClick(@PathVariable Integer id, @RequestBody SumarClickPublicacionDTOsetter sumarClickPublicacionDTOsetter) {
+        try {
+            Publicacion publicacion = repo.findById(id).orElse(null);
+            if (publicacion == null) {
+                return new ResponseEntity<>("No existe la publicacion con id " + id, HttpStatus.NOT_FOUND);
+            }
+            if (sumarClickPublicacionDTOsetter.getSumarVisita()) {
+                publicacion.sumarVisita();
+                repo.save(publicacion);
+                return new ResponseEntity<Publicacion>(publicacion, HttpStatus.OK);
+            }else{
+                return new ResponseEntity<>("No se pudo sumar el click",HttpStatus.BAD_REQUEST);
             }
         }catch (Exception e){
             return new ResponseEntity<>("No se pudo cargar la publicacion, campos invalidos",HttpStatus.BAD_REQUEST);
