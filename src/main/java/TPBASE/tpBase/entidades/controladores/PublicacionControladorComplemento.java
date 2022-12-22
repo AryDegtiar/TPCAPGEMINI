@@ -16,6 +16,7 @@ import TPBASE.tpBase.entidades.productos.Publicacion;
 import TPBASE.tpBase.entidades.repositorios.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,11 +47,13 @@ public class PublicacionControladorComplemento {
         this.em = em;
     }
 
-    @GetMapping(path = {"/publicacion","/publicacion/"})
+    @GetMapping(path = "/publicacion/firstElement/{first}/{max}")
     public ResponseEntity<?> getPublicacionesActivas(@RequestParam(name = "vendedorId", required = false) Integer vendedorId,
                                                      @RequestParam(name = "activo", required = false) Boolean activo,
                                                      @RequestParam(name = "categoriaId", required = false) Integer categoriaId,
-                                                     @RequestParam(name = "estado", required = false) String estadoPublicacion){
+                                                     @RequestParam(name = "estado", required = false) String estadoPublicacion,
+                                                     @PathVariable Integer first,
+                                                     @PathVariable Integer max) {
         try {
             if (vendedorId != null || activo != null || estadoPublicacion != null || categoriaId != null) {
 
@@ -97,38 +100,38 @@ public class PublicacionControladorComplemento {
 
                 // esta parte es medio choclo feo pero si no lo hago de esta forma el enum no me lo reconoce
                 if (estadoPublicacion != null) {
-                    System.out.println("ENTREEEEEEEEEE");
                     switch (estadoPublicacion) {
                         case "DISPONIBLE":
                             if (query == null) {
                                 query = "SELECT p FROM Publicacion p WHERE p.estadoPublicacion = :estado";
-                                return new ResponseEntity<>(em.createQuery(query).setParameter("estado", EnumEstado.DISPONIBLE).getResultList(), HttpStatus.OK);
+                                return new ResponseEntity<>(em.createQuery(query).setParameter("estado", EnumEstado.DISPONIBLE).setFirstResult(first).setMaxResults(max).getResultList(), HttpStatus.OK);
                             } else {
-                                return new ResponseEntity<>(em.createQuery(query + " AND p.estadoPublicacion = :estado").setParameter("estado", EnumEstado.DISPONIBLE).getResultList(), HttpStatus.OK);
+                                return new ResponseEntity<>(em.createQuery(query + " AND p.estadoPublicacion = :estado").setParameter("estado", EnumEstado.DISPONIBLE).setFirstResult(first).setMaxResults(max).getResultList(), HttpStatus.OK);
                             }
                         case "PAUSADO":
                             if (query == null) {
                                 query = "SELECT p FROM Publicacion p WHERE p.estadoPublicacion = :estado";
-                                return new ResponseEntity<>(em.createQuery(query).setParameter("estado", EnumEstado.PAUSADO).getResultList(), HttpStatus.OK);
+                                return new ResponseEntity<>(em.createQuery(query).setParameter("estado", EnumEstado.PAUSADO).setFirstResult(first).setMaxResults(max).getResultList(), HttpStatus.OK);
                             } else {
-                                return new ResponseEntity<>(em.createQuery(query + " AND p.estadoPublicacion = :estado").setParameter("estado", EnumEstado.PAUSADO).getResultList(), HttpStatus.OK);
+                                return new ResponseEntity<>(em.createQuery(query + " AND p.estadoPublicacion = :estado").setParameter("estado", EnumEstado.PAUSADO).setFirstResult(first).setMaxResults(max).getResultList(), HttpStatus.OK);
                             }
                         case "CANCELADO":
                             if (query == null) {
                                 query = "SELECT p FROM Publicacion p WHERE p.estadoPublicacion = :estado";
-                                return new ResponseEntity<>(em.createQuery(query).setParameter("estado", EnumEstado.CANCELADO).getResultList(), HttpStatus.OK);
+                                return new ResponseEntity<>(em.createQuery(query).setParameter("estado", EnumEstado.CANCELADO).setFirstResult(first).setMaxResults(max).getResultList(), HttpStatus.OK);
                             } else {
-                                return new ResponseEntity<>(em.createQuery(query + " AND p.estadoPublicacion = :estado").setParameter("estado", EnumEstado.CANCELADO).getResultList(), HttpStatus.OK);
+                                return new ResponseEntity<>(em.createQuery(query + " AND p.estadoPublicacion = :estado").setParameter("estado", EnumEstado.CANCELADO).setFirstResult(first).setMaxResults(max).getResultList(), HttpStatus.OK);
                             }
                         default:
                             return new ResponseEntity<>("No existe el estado de publicacion " + estadoPublicacion, HttpStatus.NOT_FOUND);
                     }
                 } else {
-                    return new ResponseEntity<>(em.createQuery(query).getResultList(), HttpStatus.OK);
+                    System.out.println("ENTREEEEEEEEEE  " + first + " " + max);
+                    return new ResponseEntity<>(em.createQuery(query).setFirstResult(first).setMaxResults(max).getResultList(), HttpStatus.OK);
                 }
 
             } else {
-                return new ResponseEntity<>(repo.findAll(), HttpStatus.OK);
+                return new ResponseEntity<>(em.createQuery("SELECT p FROM Publicacion p").setFirstResult(first).setMaxResults(max).getResultList(), HttpStatus.OK);
             }
         }catch (Exception e){
             return new ResponseEntity<>("Hubo un error con la peticion", HttpStatus.INTERNAL_SERVER_ERROR);

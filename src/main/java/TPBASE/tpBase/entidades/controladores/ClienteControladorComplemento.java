@@ -43,13 +43,12 @@ public class ClienteControladorComplemento {
         this.em = em;
     }
 
-    @GetMapping("/cliente/login")
-    public ResponseEntity<?> getLogIn(@RequestParam(name = "email") String email,
-                                      @RequestParam(name = "password") String password) {
+    @PostMapping("/cliente/login")
+    public @ResponseBody ResponseEntity<?> getLogIn(@RequestBody ClienteDTOsetter clienteDTOsetter) {
 
         List<Cliente> resultCli = em.createQuery("SELECT c FROM Cliente c WHERE c.mail = :email AND c.contrasenia = :password", Cliente.class)
-                .setParameter("email", email)
-                .setParameter("password", password)
+                .setParameter("email", clienteDTOsetter.getMail())
+                .setParameter("password", clienteDTOsetter.getContrasenia())
                 .getResultList();
         if (resultCli.size() == 0){
             return new ResponseEntity<>("Usuario o contraseña invalidos", HttpStatus.NOT_FOUND);
