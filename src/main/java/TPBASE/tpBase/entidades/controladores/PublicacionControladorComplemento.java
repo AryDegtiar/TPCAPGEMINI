@@ -47,7 +47,8 @@ public class PublicacionControladorComplemento {
         this.em = em;
     }
 
-    @GetMapping(path = "/publicacion/firstElement/{first}/{max}")
+    // hago la paginacion a mano porque uso hql
+    @GetMapping(path = "/publicacion/paginable/{first}/{max}")
     public ResponseEntity<?> getPublicacionesActivas(@RequestParam(name = "vendedorId", required = false) Integer vendedorId,
                                                      @RequestParam(name = "activo", required = false) Boolean activo,
                                                      @RequestParam(name = "categoriaId", required = false) Integer categoriaId,
