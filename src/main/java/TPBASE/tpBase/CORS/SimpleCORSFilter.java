@@ -1,4 +1,4 @@
-package com.compasso.CORS;
+package TPBASE.tpBase.CORS;
 
 import java.io.IOException;
 import javax.servlet.Filter;
