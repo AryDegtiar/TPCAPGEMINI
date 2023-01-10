@@ -29,6 +29,13 @@ Se deben implementar las pantallas del comprador:
 <h2>🤔 Logica: 🤔</h2>
 ![image](https://user-images.githubusercontent.com/82188877/211683914-5ad89f0a-4a7c-408e-8724-5acf2342eda7.png)
 
+#### Estructura:
+Un producto base puede tener categorias, a su vez puede tener varias posibles personalizaciones, cada posible personalizacion tiene un area y un tipo. Cada tipo y area son creadas una unica vez ya que despues es combinada con la posible personalizacion destaco que hay una relacion de many to many de producto base a posible personalizacion ya que de esa manera no se repite la tabla.
+La publicacion va a ser el producto final en el cual va a interactuar el comprador. Cada publicacion va a tener personalizaciones que estas si van necesitar ser creadas por cada publicacion ya que puede variar el contenido, la descripcion o el precio. 
+Un vendedor puede tener muchos metedos de pago (spoiler los metodos de pago los cree con enum)
+Por ultimo cada cliente tiene compras realizadas que van a ser el preducto con su cantidad.
+
+
 
 <br>
 <h3> Tecnologias usadas: </h3>
@@ -39,4 +46,3 @@ Se deben implementar las pantallas del comprador:
 
 
 <h3> Nota: </h3>
-
