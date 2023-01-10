@@ -43,7 +43,7 @@ public class ClienteControladorComplemento {
         this.em = em;
     }
 
-    @PostMapping("/cliente/get/login")
+    @PostMapping("/cliente/login")
     public @ResponseBody ResponseEntity<?> getLogIn(@RequestBody ClienteDTOsetter clienteDTOsetter) {
 
         List<Cliente> resultCli = em.createQuery("SELECT c FROM Cliente c WHERE c.mail = :email AND c.contrasenia = :password", Cliente.class)
@@ -78,7 +78,7 @@ public class ClienteControladorComplemento {
     }
 
     @Transactional
-    @DeleteMapping("/cliente/{id}")
+    @DeleteMapping("/cliente/delete/{id}")
     public @ResponseBody ResponseEntity<?> eliminarCliente(@PathVariable("id") Integer clienteId) {
         if (clienteRepositorio.existsById(clienteId)) {
             clienteRepositorio.deleteById(clienteId);
@@ -89,7 +89,7 @@ public class ClienteControladorComplemento {
     }
 
     // COMPRAS
-    @PostMapping("/cliente/{id}/compraRealizadas")
+    @PostMapping("/cliente/post/{id}/compraRealizadas")
     public @ResponseBody ResponseEntity<?> agregarCompra(@PathVariable("id") Integer clienteId, @RequestBody PublicacionesDTOsetterID publicacionesDTOsetterID) {
         try {
             if (clienteRepositorio.existsById(clienteId)) {
@@ -136,19 +136,19 @@ public class ClienteControladorComplemento {
         }
     }
 
-    @PostMapping("/cliente/{id}/compraRealizadas/{idCompra}")
+    @PostMapping("/cliente/post/{id}/compraRealizadas/{idCompra}")
     public ResponseEntity<?> postCompraId(){
         return new ResponseEntity<>("No se puede modificar las compras realidas", HttpStatus.BAD_REQUEST);
     }
-    @PatchMapping("/cliente/{id}/compraRealizadas/{idCompra}")
+    @PatchMapping("/cliente/patcg/{id}/compraRealizadas/{idCompra}")
     public ResponseEntity<?> patchCompra(){
         return new ResponseEntity<>("No se puede modificar las compras realidas", HttpStatus.BAD_REQUEST);
     }
-    @PutMapping("/cliente/{id}/compraRealizadas/{idCompra}")
+    @PutMapping("/cliente/put/{id}/compraRealizadas/{idCompra}")
     public ResponseEntity<?> putCompra(){
         return new ResponseEntity<>("No se puede modificar las compras realidas", HttpStatus.BAD_REQUEST);
     }
-    @DeleteMapping("/cliente/{id}/compraRealizadas/{idCompra}")
+    @DeleteMapping("/cliente/delete/{id}/compraRealizadas/{idCompra}")
     public ResponseEntity<?> modificarCompra(){
         return new ResponseEntity<>("No se puede eliminar las compras realidas", HttpStatus.BAD_REQUEST);
     }
