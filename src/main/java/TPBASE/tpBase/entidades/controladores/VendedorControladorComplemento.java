@@ -38,20 +38,6 @@ public class VendedorControladorComplemento {
                     notFoundMetodoPago = true;
                 }
             }
-<<<<<<< HEAD
-
-            if (notFoundMetodoPago) {
-                return new ResponseEntity<>("No se encontró el método de pago", HttpStatus.BAD_REQUEST);
-            }else{
-                Vendedor vendedor = new Vendedor();
-                vendedor.setMail(vendedorDTOsetter.getMail());
-                vendedor.setContrasenia(vendedorDTOsetter.getContrasenia());
-                vendedor.setNombreTienda(vendedorDTOsetter.getNombreTienda());
-                vendedor.setMetodoPagos(metodosPagos);
-
-                repo.save(vendedor);
-                return new ResponseEntity<Vendedor>(vendedor, HttpStatus.OK);
-=======
 
             if (notFoundMetodoPago) {
                 return new ResponseEntity<>("No se encontró el método de pago", HttpStatus.BAD_REQUEST);
@@ -64,7 +50,6 @@ public class VendedorControladorComplemento {
 
                     repo.save(vendedor);
                     return new ResponseEntity<Vendedor>(vendedor, HttpStatus.OK);
->>>>>>> test-api-dto
             }
         } catch (Exception e) {
             return new ResponseEntity<>("Error, campos de vendedor invalidos", HttpStatus.BAD_REQUEST);

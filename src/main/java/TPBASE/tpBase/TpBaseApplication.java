@@ -14,9 +14,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @SpringBootApplication
 public class TpBaseApplication {
 	// REPOSITORIOS
@@ -51,7 +48,6 @@ public class TpBaseApplication {
 			if (args.length > 0) {
 				System.out.println(args[0]);
 			}
-			//
 
 			Cliente cliente = clienteRepositorio.save(new Cliente("root@root.com", "123"));
 

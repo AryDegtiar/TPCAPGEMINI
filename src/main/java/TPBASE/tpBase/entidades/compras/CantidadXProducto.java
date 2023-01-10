@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 public class CantidadXProducto {
     @Id
     @GeneratedValue
-    private Integer id;
+    private Integer cantXProdID;
 
     @NotNull
     @Column(name = "cantidad")

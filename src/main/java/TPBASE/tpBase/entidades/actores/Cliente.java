@@ -15,16 +15,14 @@ import java.util.List;
 @Entity
 @Table(name = "cliente")
 public class Cliente extends EntidadPersistente {
-<<<<<<< HEAD
-=======
 
     @NotNull @Email
->>>>>>> test-api-dto
     @Column(name = "mail")
     private String mail;
     @NotNull
     @Column(name = "contrasenia")
     private String contrasenia;
+
     @OneToMany
     @JoinColumn(name = "clienteID", referencedColumnName = "id")
     private List<CompraRealizada> compraRealizadas;

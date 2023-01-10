@@ -3,28 +3,18 @@ package TPBASE.tpBase.entidades.compras;
 import TPBASE.tpBase.entidades.actores.Cliente;
 import TPBASE.tpBase.entidades.enums.EnumMetodoPago;
 import TPBASE.tpBase.entidades.actores.Vendedor;
-<<<<<<< HEAD
-import TPBASE.tpBase.entidades.productos.Publicacion;
-import com.sun.javafx.collections.MappingChange;
-=======
 import TPBASE.tpBase.entidades.metodosPagos.MetodoPago;
 import TPBASE.tpBase.entidades.productos.Publicacion;
->>>>>>> test-api-dto
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
-<<<<<<< HEAD
-import javax.persistence.criteria.CriteriaBuilder;
-import java.time.LocalDate;
-=======
 import javax.validation.constraints.NotNull;
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
->>>>>>> test-api-dto
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,27 +27,19 @@ public class CompraRealizada {
     @Getter
     @Id
     @GeneratedValue
-    private Integer id;
+    private Integer comprareali_id;
 
     @NotNull
     @Column(name = "fecha", columnDefinition = "DATE")
     private LocalDate fecha;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-    @OneToMany // se puede agregar esto por cascada
-    @JoinColumn(name = "compraRealizadaID", referencedColumnName = "id")
-=======
-=======
     @NotNull
     @Column(name = "hora", columnDefinition = "TIME")
     private LocalTime hora;
 
->>>>>>> test-api-dto
     // ojo ver, es para opcion 2
     @OneToMany
     @JoinColumn(name = "compraRealizadaID", referencedColumnName = "comprareali_id")
->>>>>>> test-api-dto
     private List<CantidadXProducto> cantidadXProductos;
 
     // ojo ver, es para opcion 1
