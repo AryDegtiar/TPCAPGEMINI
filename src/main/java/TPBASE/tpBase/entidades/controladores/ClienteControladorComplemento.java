@@ -43,7 +43,7 @@ public class ClienteControladorComplemento {
         this.em = em;
     }
 
-    @PostMapping("/cliente/login")
+    @PostMapping("/cliente/get/login")
     public @ResponseBody ResponseEntity<?> getLogIn(@RequestBody ClienteDTOsetter clienteDTOsetter) {
 
         List<Cliente> resultCli = em.createQuery("SELECT c FROM Cliente c WHERE c.mail = :email AND c.contrasenia = :password", Cliente.class)
