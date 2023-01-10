@@ -51,6 +51,7 @@ public class TpBaseApplication {
 			if (args.length > 0) {
 				System.out.println(args[0]);
 			}
+			//
 
 			Cliente cliente = clienteRepositorio.save(new Cliente("root@root.com", "123"));
 
