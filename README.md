@@ -27,7 +27,7 @@ Se deben implementar las pantallas del comprador:
 <br>
 
 <h2>🤔 Logica: 🤔</h2>
-[![Sin-t-tulo.jpg](https://i.postimg.cc/2yCnzKKy/Sin-t-tulo.jpg)](https://postimg.cc/S2tndDqb)
+![image](https://user-images.githubusercontent.com/82188877/211683914-5ad89f0a-4a7c-408e-8724-5acf2342eda7.png)
 
 
 <br>
