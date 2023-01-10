@@ -1,4 +1,0 @@
-
-- validaciones hechas, revisar si se puede poner algo para cuando se repite el id de personalizacion en publiacacion y que salga con error id
-- agregar busqueda por nombre de publicacion
-- dar de baja solo producto base y publicacion, o verificar el prod base y publi que este todo en true 
