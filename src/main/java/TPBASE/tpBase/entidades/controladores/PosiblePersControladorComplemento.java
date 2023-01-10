@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 
-
+@CrossOrigin(origins= {"*"}, maxAge = 4800, allowCredentials = "false")
 @RepositoryRestController
 public class PosiblePersControladorComplemento {
 

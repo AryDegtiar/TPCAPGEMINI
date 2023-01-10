@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+@CrossOrigin(origins= {"*"}, maxAge = 4800, allowCredentials = "false")
 @RepositoryRestController
 public class ClienteControladorComplemento {
 

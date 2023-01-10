@@ -26,7 +26,7 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-
+@CrossOrigin(origins= {"*"}, maxAge = 4800, allowCredentials = "false")
 @RepositoryRestController
 public class PublicacionControladorComplemento {
 
