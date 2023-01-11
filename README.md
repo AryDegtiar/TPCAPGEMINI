@@ -27,7 +27,9 @@ Se deben implementar las pantallas del comprador:
 <br>
 
 <h2>🤔 Logica: 🤔</h2>
-![image](https://user-images.githubusercontent.com/82188877/211683914-5ad89f0a-4a7c-408e-8724-5acf2342eda7.png)
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/82188877/211683914-5ad89f0a-4a7c-408e-8724-5acf2342eda7.png">
+</p>
 
 #### Estructura:
 Un producto base puede tener categorias, a su vez puede tener varias posibles personalizaciones, cada posible personalizacion tiene un area y un tipo. Cada tipo y area son creadas una unica vez ya que despues es combinada con la posible personalizacion destaco que hay una relacion de many to many de producto base a posible personalizacion ya que de esa manera no se repite la tabla.
