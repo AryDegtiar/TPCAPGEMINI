@@ -40,11 +40,21 @@ Por ultimo cada cliente tiene compras realizadas que van a ser el preducto con s
 
 
 <br>
-<h3> Tecnologias usadas: </h3>
-🔓
 
 <h3> Objetivos logrados: </h3>
-🦖 
+<p>🦖  ABM Producto base </p>  
+<p>🦖  ABM Publicaciones </p>
+<p>🦖  ABM Categorias </p>
+<p>🦖  ABM Usuarios </p>
+<p>🦖  ABM Carrito de compras </p>
+<p>🦖  ABM Historial de compras </p>
+ 
+<h3> Tecnologias usadas: </h3>
+🔓 JAVA - Spring Boot
+🔓 MySQL - Hibernate
+🔓 Angular - Boostrap
 
 
 <h3> Nota: </h3>
+El plazo de entrega para este tp fue de 1 mes, dictado dentro de la cursada, por dicha razon hay codigo que se puede mejorar ya que a medida que ibamos aprendiendo teniamos que ir haciendo el tp.
+  
